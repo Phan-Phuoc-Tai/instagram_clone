@@ -43,10 +43,16 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --primary-text: #0a1317;
+  --primary-text: #111112;
   --placeholder-text: #5d6c7b;
   --border-input-form: #ccd3db;
-  --border-focus: #5d6c7b;
+  --border-focus: #0064e0;
+  --primary-button-bg: #0064e0;
+  --primary-button-text: #f2f4f6;
+  --secondary-button-border: #d0d3d6;
+  --blue-link: #0064e0;
+  --border-blue-link: #0064e0;
+  --divider: #dfe2e5;
 }
 
 :root {

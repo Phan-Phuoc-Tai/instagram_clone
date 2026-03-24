@@ -1,12 +1,14 @@
-import Input from "./components/form/Input";
+import { Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
 
 export default function App() {
   return (
     <>
-      <Input
-        type={"email"}
-        label={"Mobile number, username or email address"}
-      />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
     </>
   );
 }
