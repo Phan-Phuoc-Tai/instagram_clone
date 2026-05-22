@@ -1,9 +1,3 @@
-# Đã cài đặt
+## Module 1 : Đăng nhập
 
-1. Vite, TypeScript + SWC
-2. Tailwindcss
-3. Shadcn
-
-## Lịch sử hoạt động: 2026
-
-1. 03/03 : create component Input
+- Validate ô input và hiển thị lỗi nếu có

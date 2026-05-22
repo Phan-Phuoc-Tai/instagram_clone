@@ -1,27 +1,24 @@
-import type { ButtonForm } from "../../types/authForm/authForm";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
-export default function Button({ content, type }: ButtonForm) {
-  const typeButton = [
-    {
-      textColor: "text-(--primary-button-text)",
-      css: "bg-(--primary-button-bg) hover:bg-blue-600",
-    },
-    {
-      textColor: "text-(--primary-text)",
-      css: "bg-transparent hover:bg-black/10",
-    },
-    {
-      textColor: "text-(--primary-text)",
-      css: "bg-transparent hover:bg-black/10 border border-(--secondary-button-border)",
-    },
-    {
-      textColor: "text-(--blue-link)",
-      css: "bg-transparent hover:bg-black/10 border border-(--border-blue-link)",
-    },
-  ];
+type Props = {
+  content: string;
+  type: { textColor: string; css: string };
+  disabled?: boolean;
+};
+
+export default function SubmitBtn({ content, type, disabled }: Props) {
+  const { textColor, css } = type;
+  const [value, setValue] = useState(content);
+
+  useEffect(() => {
+    setValue(content);
+  }, [content]);
+
   return (
-    <div
-      className={`flex items-center justify-center px-5 ${typeButton[type].css} h-11 rounded-[22px] gap-1 cursor-pointer`}
+    <Button
+      className={`flex items-center justify-center px-5 ${css} h-11 rounded-[22px] gap-1 `}
+      disabled={disabled}
     >
       {content.includes("Facebook") && (
         <svg
@@ -46,9 +43,7 @@ export default function Button({ content, type }: ButtonForm) {
           </g>
         </svg>
       )}
-      <span className={`text-[15px] font-medium ${typeButton[type].textColor}`}>
-        {content}
-      </span>
-    </div>
+      <span className={`text-[15px] font-medium ${textColor}`}>{value}</span>
+    </Button>
   );
 }
