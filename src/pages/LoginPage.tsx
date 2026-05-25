@@ -1,25 +1,28 @@
 import SubmitBtn from "../components/form/SubmitBtn";
 import Email from "../components/form/Email";
 import MetaLogo from "../components/icons/MetaLogo";
-import ins_bg from "../../public/images/ins_image.webp";
-import ins_logo from "../../public/images/instagram-colorful.svg";
+import ins_bg from "/images/ins_image.webp";
+import ins_logo from "/images/instagram-colorful.svg";
 import Password from "../components/form/Password";
-import { FORM_CONFIG, FORM_LOGIN } from "@/constants/form.constant";
+import { FORM_CONFIG, FORM_LOGIN } from "@/constants/auth.constant";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schemas/login.schema";
 import { toast } from "sonner";
 import { authService } from "@/services/auth.service";
 import type { FormData } from "@/types/form.type";
+import { useState } from "react";
+import { CONFIG } from "@/constants/config.constant";
 
 export default function LoginPage() {
   const SUBMIT_BTN = FORM_CONFIG.SUBMIT_BTN;
+  const LABEL = FORM_CONFIG.LABEL;
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<FormData>({
+  } = useForm({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
     defaultValues: {
@@ -27,12 +30,17 @@ export default function LoginPage() {
       password: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = (formData: Partial<FormData>) => {
     toast.promise(authService.login(formData), {
       loading: FORM_LOGIN.LOADING,
-      error: FORM_LOGIN.ERROR,
+      error() {
+        setIsLoading(false);
+        return FORM_LOGIN.ERROR;
+      },
       success(data) {
         const { tokens } = data;
+        setIsLoading(false);
         reset();
         localStorage.setItem("accessToken", tokens.accessToken);
         localStorage.setItem("refreshToken", tokens.refreshToken);
@@ -40,6 +48,7 @@ export default function LoginPage() {
       },
     });
   };
+
   return (
     <div className="flex h-screen">
       <div className="py-12 px-8  flex-1.5 w-full">
@@ -60,7 +69,7 @@ export default function LoginPage() {
           <img
             src={ins_bg}
             alt="ins image"
-            className="object-contain h-[575px] w-full"
+            className="object-contain h-143.75 w-full"
           />
         </div>
       </div>
@@ -74,35 +83,44 @@ export default function LoginPage() {
           className="w-136.5 flex flex-col gap-4"
         >
           <Email
-            type={"email"}
-            label={"Mobile number, username or email address"}
-            register={register}
-            error={errors.email}
+            label={LABEL.EMAIL}
+            register={register("email")}
+            errorStatus={errors.email?.message ? true : false}
           />
-
-          <Password label="Password" type="password" register={register} />
+          {errors.email?.message && (
+            <p className="text-red-500 -mt-4">{errors.email.message}</p>
+          )}
+          <Password
+            label={LABEL.PASSWORD}
+            register={register("password")}
+            errorStatus={errors.password?.message ? true : false}
+          />
           {errors.password?.message && (
             <p className="text-red-500 -mt-4">{errors.password.message}</p>
           )}
           <div className="mt-2 flex flex-col gap-3">
             <SubmitBtn
-              content={isSubmitting ? "Log in..." : "Log in"}
-              type={SUBMIT_BTN.LOG_IN}
+              content={SUBMIT_BTN.LOG_IN.TEXT}
+              style={SUBMIT_BTN.LOG_IN}
               disabled={!isValid || isSubmitting}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
             <SubmitBtn
-              content={"Forgotten password?"}
-              type={SUBMIT_BTN.FORGOT_PASSWORD}
+              content={SUBMIT_BTN.FORGOT_PASSWORD.TEXT}
+              style={SUBMIT_BTN.FORGOT_PASSWORD}
+              linkTo={CONFIG.FORGOT_PASSWORD}
             />
           </div>
           <div className="pt-7.5 flex flex-col gap-3">
             <SubmitBtn
-              content={"Log in with Facebook"}
-              type={SUBMIT_BTN.LOGIN_WITH_FB}
+              content={SUBMIT_BTN.LOGIN_WITH_FB.TEXT}
+              style={SUBMIT_BTN.LOGIN_WITH_FB}
             />
             <SubmitBtn
-              content={"Create new account"}
-              type={SUBMIT_BTN.CREATE_ACCOUNT}
+              content={SUBMIT_BTN.CREATE_ACCOUNT.TEXT}
+              style={SUBMIT_BTN.CREATE_ACCOUNT}
+              linkTo={CONFIG.REGISTER}
             />
           </div>
           <MetaLogo />

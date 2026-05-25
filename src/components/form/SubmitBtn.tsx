@@ -1,24 +1,40 @@
-import { useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import { Button } from "../ui/button";
+import { Spinner } from "../ui/spinner";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   content: string;
-  type: { textColor: string; css: string };
+  style: {
+    TEXT_COLOR: string;
+    CSS: string;
+    TYPE?: string;
+  };
   disabled?: boolean;
+  isLoading?: boolean;
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
+  linkTo?: string;
 };
 
-export default function SubmitBtn({ content, type, disabled }: Props) {
-  const { textColor, css } = type;
-  const [value, setValue] = useState(content);
-
-  useEffect(() => {
-    setValue(content);
-  }, [content]);
-
+export default function SubmitBtn({
+  content,
+  style,
+  disabled,
+  isLoading,
+  setIsLoading,
+  linkTo,
+}: Props) {
+  const { TEXT_COLOR, CSS, TYPE } = style;
+  const navigate = useNavigate();
   return (
     <Button
-      className={`flex items-center justify-center px-5 ${css} h-11 rounded-[22px] gap-1 `}
+      type={TYPE === "button" ? "button" : "submit"}
+      className={`flex items-center justify-center px-5 ${CSS} h-11 rounded-[22px] gap-1 `}
       disabled={disabled}
+      onClick={() => {
+        //Nếu có link thì không xử lý loading
+        return linkTo ? navigate(linkTo) : setIsLoading!(true);
+      }}
     >
       {content.includes("Facebook") && (
         <svg
@@ -43,7 +59,8 @@ export default function SubmitBtn({ content, type, disabled }: Props) {
           </g>
         </svg>
       )}
-      <span className={`text-[15px] font-medium ${textColor}`}>{value}</span>
+      <span className={`text-[15px] font-medium ${TEXT_COLOR}`}>{content}</span>
+      {isLoading && <Spinner />}
     </Button>
   );
 }
