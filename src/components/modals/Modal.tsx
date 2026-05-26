@@ -8,7 +8,7 @@ import {
 import type React from "react";
 type Props = {
   title?: string;
-  styleTitle: string;
+  styleTitle?: string;
   children?: React.ReactNode;
   open: boolean;
   onClose: () => void;

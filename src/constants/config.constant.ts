@@ -1,7 +1,8 @@
 export const CONFIG = {
-  REGISTER: "/register",
-  LOGIN: "/login",
   HOME: "/",
+  EXPLORE: "/explore",
+  LOGIN: "/login",
+  REGISTER: "/register",
   VERIFY_EMAIL: "/verify-email",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
@@ -16,5 +17,8 @@ export const API = {
       return `/api/auth/verify-email/${token}`;
     },
     FORGOT_PASSWORD: "/api/auth/forgot-password",
+    RESET_PASSWORD(token: string) {
+      return `/api/auth/reset-password/${token}`;
+    },
   },
 };

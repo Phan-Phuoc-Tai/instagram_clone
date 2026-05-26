@@ -29,14 +29,14 @@ export default function VerifyEmailTokenPage() {
     if (!isVerified) {
       return;
     }
-    const timer = setInterval(() => {
+    const timer = setTimeout(() => {
       setCount((prev) => prev - 1);
     }, 1000);
     if (count === 0) {
       navigate(CONFIG.LOGIN);
       return;
     }
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, [count, isVerified, navigate]);
   return (
     <div className="max-w-150 w-full h-screen flex items-center justify-center mx-auto ">
@@ -50,9 +50,8 @@ export default function VerifyEmailTokenPage() {
               }}
             />
             <span>Your email address has been successfully verified.</span>
-            <span>
-              We are redirecting to the login page after {count} seconds
-            </span>
+            <span>We are redirecting to the login page after </span>
+            <p className="text-center text-2xl">{count}</p>
           </div>
         ) : (
           <div className="flex items-center justify-center w-full h-full gap-3">

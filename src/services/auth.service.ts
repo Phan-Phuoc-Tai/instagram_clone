@@ -35,4 +35,12 @@ export const authService = {
     const { success } = response.data;
     return success;
   },
+  resetPassword: async (token: string, formData: Partial<FormData>) => {
+    const response = await axiosInstance.post(
+      API.AUTH.RESET_PASSWORD(token),
+      formData,
+    );
+    const { success } = response.data;
+    return success;
+  },
 };

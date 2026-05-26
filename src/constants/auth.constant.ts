@@ -124,3 +124,9 @@ export const FORGOT_PASSWORD = {
   ERROR: "Password reset email sent failed!",
   SUCCESS: "Password reset email sent success!",
 };
+
+export const RESET_PASSWORD = {
+  LOADING: "Processing...",
+  ERROR: "Password reset failed!",
+  SUCCESS: "Password reset success!",
+};

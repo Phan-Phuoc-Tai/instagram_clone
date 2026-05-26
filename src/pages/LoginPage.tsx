@@ -13,6 +13,7 @@ import { authService } from "@/services/auth.service";
 import type { FormData } from "@/types/form.type";
 import { useState } from "react";
 import { CONFIG } from "@/constants/config.constant";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const SUBMIT_BTN = FORM_CONFIG.SUBMIT_BTN;
@@ -31,6 +32,7 @@ export default function LoginPage() {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const onSubmit = (formData: Partial<FormData>) => {
     toast.promise(authService.login(formData), {
       loading: FORM_LOGIN.LOADING,
@@ -41,6 +43,7 @@ export default function LoginPage() {
       success(data) {
         const { tokens } = data;
         setIsLoading(false);
+        navigate(CONFIG.HOME);
         reset();
         localStorage.setItem("accessToken", tokens.accessToken);
         localStorage.setItem("refreshToken", tokens.refreshToken);

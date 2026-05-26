@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { authService } from "@/services/auth.service";
 import type { FormData } from "@/types/form.type";
 import Modal from "@/components/modals/Modal";
-import Notification from "@/components/forgotPassword/Notification";
+import NotifySentEmail from "@/components/forgotPassword/NotifySentEmail";
 export default function ForgotPasswordPage() {
   const LABEL = FORM_CONFIG.LABEL;
   const SUBMIT_BTN = FORM_CONFIG.SUBMIT_BTN;
@@ -79,9 +79,8 @@ export default function ForgotPasswordPage() {
           className="flex flex-col gap-4 w-full"
         >
           <Email
-            type="email"
             label={LABEL.EMAIL_REGISTER}
-            register={register}
+            register={register("email")}
             errorStatus={errors.email?.message ? true : false}
           />
           {errors.email?.message && (
@@ -107,7 +106,7 @@ export default function ForgotPasswordPage() {
           open={isOpen}
           onClose={() => setIsOpen(false)}
         >
-          <Notification email={email} onClose={() => setIsOpen(false)} />
+          <NotifySentEmail email={email} onClose={() => setIsOpen(false)} />
         </Modal>
       )}
     </>

@@ -4,7 +4,7 @@ type Props = {
   email: string;
   onClose: () => void;
 };
-export default function Notification({ email, onClose }: Props) {
+export default function NotifySentEmail({ email, onClose }: Props) {
   const handleCloseNotify = () => {
     onClose();
   };
