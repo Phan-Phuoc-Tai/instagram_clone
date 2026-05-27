@@ -1,11 +1,17 @@
 import SidebarIns from "@/components/sidebar/SidebarIns";
+import { useUserStore } from "@/stores/user.store";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 export default function MainLayout() {
+  const { refetchUser } = useUserStore();
+  useEffect(() => {
+    refetchUser();
+  }, []);
   return (
-    <div className="flex">
+    <div>
       <SidebarIns />
-      <div className="flex-1">
+      <div>
         <Outlet />
       </div>
     </div>

@@ -20,5 +20,12 @@ export const API = {
     RESET_PASSWORD(token: string) {
       return `/api/auth/reset-password/${token}`;
     },
+    REFRESH_TOKEN: "/api/auth/refresh-token",
+  },
+  USER: {
+    PROFILE: "/api/users/profile",
+  },
+  POSTS: {
+    NEWS_FEED: "/api/posts/feed",
   },
 };
