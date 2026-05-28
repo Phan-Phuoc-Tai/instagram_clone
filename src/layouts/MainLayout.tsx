@@ -11,9 +11,7 @@ export default function MainLayout() {
   return (
     <div>
       <SidebarIns />
-      <div>
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 }

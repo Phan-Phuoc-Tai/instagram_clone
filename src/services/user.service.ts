@@ -8,4 +8,14 @@ export const userService = {
     const { data } = response.data;
     return data;
   },
+  getUserById: async (id: string): Promise<User> => {
+    const response = await axiosInstance.get(API.USER.BY_ID(id));
+    const { data } = response.data;
+    return data;
+  },
+  getSuggestedUsers: async (): Promise<User[]> => {
+    const response = await axiosInstance.get(API.USER.SUGGESTED_USERS(5));
+    const { data } = response.data;
+    return data;
+  },
 };

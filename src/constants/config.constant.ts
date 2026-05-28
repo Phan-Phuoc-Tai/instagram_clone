@@ -24,8 +24,16 @@ export const API = {
   },
   USER: {
     PROFILE: "/api/users/profile",
+    BY_ID(id: string) {
+      return `/api/users/${id}`;
+    },
+    SUGGESTED_USERS(limit = 5) {
+      return `/api/users/suggested?limit=${limit}`;
+    },
   },
   POSTS: {
-    NEWS_FEED: "/api/posts/feed",
+    NEWS_FEED(limit: number, offset: number) {
+      return `/api/posts/feed?limit=${limit}&offset=${offset}`;
+    },
   },
 };

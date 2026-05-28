@@ -60,6 +60,8 @@
   --font-sans: "Geist Variable", sans-serif;
   --ig-primary-text: #0c1014;
   --ig-secondary-text: #6a717a;
+  --ig-follow-text: #4150f7;
+  --ig-follow-text-hover: #2536d0;
 }
 
 :root {

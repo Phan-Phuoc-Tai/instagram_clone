@@ -18,9 +18,12 @@ export default function SidebarIns() {
   };
   return (
     <aside className="group fixed top-0 left-0 bottom-0 z-50 w-18 hover:w-60 transition-all ease-in-out duration-300 px-3 pt-2 pb-5 flex flex-col justify-between bg-white">
-      <div className="w-10 h-10 flex items-center justify-center mx-1 rounded-lg hover:bg-black/5 cursor-pointer">
+      <NavLink
+        to={CONFIG.HOME}
+        className="w-10 h-10 flex items-center justify-center mx-1 rounded-lg hover:bg-black/5 cursor-pointer"
+      >
         <Instagram />
-      </div>
+      </NavLink>
       <ul className="group-hover:w-51">
         <NavLink
           to={CONFIG.HOME}
