@@ -26,7 +26,7 @@ const initApp = () => {
 
     setTimeout(() => {
       renderApp();
-    }, 1000);
+    }, 400);
   } else {
     renderApp();
   }

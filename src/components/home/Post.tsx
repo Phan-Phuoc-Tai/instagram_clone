@@ -1,5 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import AvatarDefault from "@/components/icons/AvatarDefault";
 import { Bookmark, Heart, MessageCircle, Repeat, Send } from "lucide-react";
 import { use } from "react";
 import { PostContext } from "@/contexts/post.context";
@@ -7,6 +5,7 @@ import type { Post } from "@/types/post.type";
 import { cn } from "@/lib/utils";
 import { useUserById } from "@/hooks/users/useUserById";
 import { formatTimePost } from "@/utils/formatTime";
+import PostInfo from "./PostInfo";
 
 export default function Post() {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -15,6 +14,8 @@ export default function Post() {
     userId,
     caption,
     image,
+    video,
+    mediaType,
     likes,
     comments,
     // likedBy,
@@ -24,50 +25,39 @@ export default function Post() {
     createdAt,
   } = context?.post as unknown as Post;
   const { user, isLoading } = useUserById(userId?._id);
-
   return (
     <article className="max-w-117.5 w-full pb-4 mb-5">
-      <div className="info flex items-center justify-between gap-3 pl-3.5 pr-2.5 pb-3">
-        <div>
-          <Avatar className="flex items-center justify-center size-8">
-            <AvatarImage
-              src={
-                user.profilePicture
-                  ? `${BASE_URL}${user.profilePicture}`
-                  : `${BASE_URL}/null`
-              }
-            />
-            <AvatarFallback asChild>
-              <div className="p-1 border bg-white">
-                <AvatarDefault width="18px" height="18px" />
-              </div>
-            </AvatarFallback>
-          </Avatar>
+      <div className="flex items-center justify-between gap-1 pl-3.5 pr-2.5 pb-3">
+        <PostInfo userId={userId ? userId._id : "null"} />
+        <div className="mr-auto flex items-center gap-1 text-sm">
+          <span className="block w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
+          <span className="text-(--ig-secondary-text) font-normal">
+            {formatTimePost(createdAt)}
+          </span>
         </div>
-        {!isLoading && (
-          <>
-            <div className="flex items-center gap-1 mr-auto text-sm">
-              <span className="text-(--ig-primary-text) font-semibold ">
-                {user.username}
-              </span>
-              <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-              <span className="text-(--ig-secondary-text) font-normal">
-                {formatTimePost(createdAt)}
-              </span>
-            </div>
-            <div className="w-5 h-5 flex items-center justify-center gap-0.5">
-              <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-              <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-              <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-            </div>
-          </>
-        )}
+        <div className="w-5 h-5 flex items-center justify-center gap-0.5">
+          <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
+          <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
+          <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
+        </div>
       </div>
       <div className="image w-117 ">
-        <img
-          src={image ? `${BASE_URL}${image}` : `${BASE_URL}/null`}
-          className="w-full object-cover rounded-sm"
-        />
+        {mediaType === "image" ? (
+          <img
+            src={image ? `${BASE_URL}${image}` : `${BASE_URL}/null`}
+            className="w-full object-cover rounded-sm text-(--ig-secondary-text)"
+            alt={`Image's ${user.username}`}
+          />
+        ) : (
+          <video
+            src={video ? `${BASE_URL}${video}` : `${BASE_URL}/null`}
+            className="w-full object-cover rounded-sm"
+            muted
+            loop
+            autoPlay
+            controls
+          />
+        )}
       </div>
       <div className="reaction px-3 flex items-center justify-between">
         <div className="my-1 flex items-center gap-2">

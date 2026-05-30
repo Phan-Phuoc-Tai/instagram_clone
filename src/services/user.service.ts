@@ -1,6 +1,6 @@
 import { API } from "@/constants/config.constant";
 import { axiosInstance } from "@/lib/axios";
-import type { User } from "@/types/user.type";
+import type { User, UserById, UserSuggested } from "@/types/user.type";
 
 export const userService = {
   profile: async (): Promise<User> => {
@@ -8,13 +8,13 @@ export const userService = {
     const { data } = response.data;
     return data;
   },
-  getUserById: async (id: string): Promise<User> => {
+  getUserById: async (id: string): Promise<UserById> => {
     const response = await axiosInstance.get(API.USER.BY_ID(id));
     const { data } = response.data;
     return data;
   },
-  getSuggestedUsers: async (): Promise<User[]> => {
-    const response = await axiosInstance.get(API.USER.SUGGESTED_USERS(5));
+  getSuggestedUsers: async (limit: number): Promise<UserSuggested[]> => {
+    const response = await axiosInstance.get(API.USER.SUGGESTED_USERS(limit));
     const { data } = response.data;
     return data;
   },

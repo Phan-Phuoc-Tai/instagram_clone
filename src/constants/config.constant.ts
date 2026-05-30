@@ -31,6 +31,11 @@ export const API = {
       return `/api/users/suggested?limit=${limit}`;
     },
   },
+  FOLLOW: {
+    FOLLOW_USER(userId: string) {
+      return `/api/follow/${userId}/follow`;
+    },
+  },
   POSTS: {
     NEWS_FEED(limit: number, offset: number) {
       return `/api/posts/feed?limit=${limit}&offset=${offset}`;

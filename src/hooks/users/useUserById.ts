@@ -1,6 +1,6 @@
 import { CACHE } from "@/constants/cache.constant";
 import { userService } from "@/services/user.service";
-import type { User } from "@/types/user.type";
+import type { UserById } from "@/types/user.type";
 import { useQuery } from "@tanstack/react-query";
 
 export const useUserById = (id: string) => {
@@ -11,7 +11,7 @@ export const useUserById = (id: string) => {
       if (!id) {
         return {
           username: "Tài khoản đã bị xóa",
-        } as User;
+        } as UserById;
       }
       return userService.getUserById(id);
     },
@@ -21,7 +21,7 @@ export const useUserById = (id: string) => {
       query.data ??
       ({
         username: "Tài khoản đã bị xóa",
-      } as User),
+      } as UserById),
     isLoading: query.isLoading,
     isError: query.isError,
   };
