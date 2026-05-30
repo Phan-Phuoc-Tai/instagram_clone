@@ -40,5 +40,14 @@ export const API = {
     NEWS_FEED(limit: number, offset: number) {
       return `/api/posts/feed?limit=${limit}&offset=${offset}`;
     },
+    POST_DETAIL(postId: string) {
+      return `/api/posts/${postId}`;
+    },
+    LIKE_POST(postId: string) {
+      return `/api/posts/${postId}/like`;
+    },
+    SAVE_POST(postId: string) {
+      return `/api/posts/${postId}/save`;
+    },
   },
 };

@@ -12,11 +12,14 @@ import { useEffect, useState } from "react";
 import { Spinner } from "../ui/spinner";
 import { useUserById } from "@/hooks/users/useUserById";
 import { useUnfollowUser } from "@/hooks/follows/useUnfollowUser";
+import { useUserStore } from "@/stores/user.store";
 type Props = {
   userId: string;
 };
-export default function PostInfo({ userId }: Props) {
+export default function LikeBy({ userId }: Props) {
   const { user, isLoading } = useUserById(userId);
+  const { user: me } = useUserStore();
+  const isOwner = user._id === me._id;
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const followUser = useFollowUser(user._id);
   const unfollowUser = useUnfollowUser(user._id);
@@ -39,35 +42,58 @@ export default function PostInfo({ userId }: Props) {
 
   return (
     <HoverCard openDelay={10} closeDelay={100}>
-      <HoverCardTrigger asChild className="my-2">
-        <div className="info flex items-center justify-between gap-3">
-          <div>
-            <Avatar className="flex items-center justify-center size-8 cursor-pointer">
-              <AvatarImage
-                src={
-                  user.profilePicture
-                    ? `${BASE_URL}${user.profilePicture}`
-                    : `${BASE_URL}/null`
-                }
-              />
-              <AvatarFallback asChild>
-                <div className="p-1 border bg-white">
-                  <AvatarDefault width="18px" height="18px" />
+      <div className="flex items-center justify-between">
+        <HoverCardTrigger asChild className="py-2">
+          <div className="info flex items-center justify-between gap-3">
+            <div>
+              <Avatar className="flex items-center justify-center size-11 cursor-pointer">
+                <AvatarImage
+                  src={
+                    user.profilePicture
+                      ? `${BASE_URL}${user.profilePicture}`
+                      : `${BASE_URL}/null`
+                  }
+                />
+                <AvatarFallback asChild>
+                  <div className="p-1 border bg-white">
+                    <AvatarDefault width="24px" height="24px" />
+                  </div>
+                </AvatarFallback>
+              </Avatar>
+            </div>
+            {!isLoading && (
+              <>
+                <div className="mr-auto text-sm cursor-pointer  ">
+                  <p className="text-(--ig-primary-text) font-semibold ">
+                    {user.username}
+                  </p>
+                  <p className="text-(--ig-secondary-text) font-semibold ">
+                    {user.fullName}
+                  </p>
                 </div>
-              </AvatarFallback>
-            </Avatar>
+              </>
+            )}
           </div>
-          {!isLoading && (
-            <>
-              <div className="flex items-center gap-1 mr-auto text-sm cursor-pointer">
-                <span className="text-(--ig-primary-text) font-semibold ">
-                  {user.username}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      </HoverCardTrigger>
+        </HoverCardTrigger>
+        {isOwner ? (
+          <></>
+        ) : isFollow ? (
+          <Button
+            variant={"secondary"}
+            className="cursor-pointer ring-0 focus-visible:ring-0 border-0"
+            onClick={handleUnfollowUser}
+          >
+            Following
+          </Button>
+        ) : (
+          <Button
+            className=" bg-(--primary-bg-button) text-white cursor-pointer ring-0 focus-visible:ring-0 border-0"
+            onClick={handleFollowUser}
+          >
+            Follow
+          </Button>
+        )}
+      </div>
       <HoverCardContent
         className="w-90 p-0 rounded-3xl border-t ring-0 shadow-xl"
         align="start"
@@ -113,9 +139,15 @@ export default function PostInfo({ userId }: Props) {
               <div className="w-full flex items-center justify-center">
                 <Spinner />
               </div>
+            ) : isOwner ? (
+              <>
+                <Button variant={"secondary"} className="flex-1 cursor-pointer">
+                  Edit profile
+                </Button>
+              </>
             ) : isFollow ? (
               <>
-                <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer">
+                <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer ring-0 focus-visible:ring-0 border-0">
                   <Send />
                   <span>Message</span>
                 </Button>
@@ -129,7 +161,7 @@ export default function PostInfo({ userId }: Props) {
               </>
             ) : (
               <Button
-                className="bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer w-full"
+                className="bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer w-full ring-0 focus-visible:ring-0 border-0"
                 onClick={handleFollowUser}
               >
                 Follow

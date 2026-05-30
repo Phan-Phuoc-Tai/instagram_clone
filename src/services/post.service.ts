@@ -1,6 +1,6 @@
 import { API } from "@/constants/config.constant";
 import { axiosInstance } from "@/lib/axios";
-import type { PostResponse } from "@/types/post.type";
+import type { Post, PostResponse } from "@/types/post.type";
 
 export const postService = {
   getNewsFeed: async ({ pageParam = 1 }): Promise<PostResponse> => {
@@ -15,5 +15,30 @@ export const postService = {
       totalPages,
       currentPage: pageParam,
     };
+  },
+  getPostById: async (postId: string): Promise<Post> => {
+    const response = await axiosInstance.get(API.POSTS.POST_DETAIL(postId));
+    const { data } = response.data;
+    return data;
+  },
+  likePost: async (postId: string): Promise<Post> => {
+    const response = await axiosInstance.post(API.POSTS.LIKE_POST(postId));
+    const { data } = response.data;
+    return data;
+  },
+  unlikePost: async (postId: string): Promise<Post> => {
+    const response = await axiosInstance.delete(API.POSTS.LIKE_POST(postId));
+    const { data } = response.data;
+    return data;
+  },
+  savePost: async (postId: string): Promise<Post> => {
+    const response = await axiosInstance.post(API.POSTS.SAVE_POST(postId));
+    const { data } = response.data;
+    return data;
+  },
+  unsavePost: async (postId: string): Promise<Post> => {
+    const response = await axiosInstance.delete(API.POSTS.SAVE_POST(postId));
+    const { data } = response.data;
+    return data;
   },
 };

@@ -37,44 +37,46 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
 
   return (
     <HoverCard openDelay={10} closeDelay={100}>
-      <HoverCardTrigger asChild className="my-2">
-        <div className="flex items-center justify-between gap-3 py-1">
-          <Avatar className="flex items-center justify-center size-11 cursor-pointer">
-            <AvatarImage
-              src={
-                suggestedUser.profilePicture
-                  ? `${BASE_URL}${suggestedUser.profilePicture}`
-                  : `${BASE_URL}/null`
-              }
-            />
-            <AvatarFallback asChild>
-              <div className="p-1 border bg-white">
-                <AvatarDefault width="26px" height="26px" />
-              </div>
-            </AvatarFallback>
-          </Avatar>
-          <p className="text-(--ig-primary-text) text-sm font-medium mr-auto truncate w-33 cursor-pointer">
-            {suggestedUser.fullName === ""
-              ? suggestedUser.username
-              : suggestedUser.fullName}
+      <div className="flex items-center justify-between">
+        <HoverCardTrigger asChild className="my-2">
+          <div className="flex items-center justify-between gap-3 py-1">
+            <Avatar className="flex items-center justify-center size-11 cursor-pointer">
+              <AvatarImage
+                src={
+                  suggestedUser.profilePicture
+                    ? `${BASE_URL}${suggestedUser.profilePicture}`
+                    : `${BASE_URL}/null`
+                }
+              />
+              <AvatarFallback asChild>
+                <div className="p-1 border bg-white">
+                  <AvatarDefault width="26px" height="26px" />
+                </div>
+              </AvatarFallback>
+            </Avatar>
+            <p className="text-(--ig-primary-text) text-sm font-medium mr-auto truncate w-33 cursor-pointer">
+              {suggestedUser.fullName === ""
+                ? suggestedUser.username
+                : suggestedUser.fullName}
+            </p>
+          </div>
+        </HoverCardTrigger>
+        {isFollow ? (
+          <p
+            className=" text-(--ig-primary-text) text-xs font-medium cursor-pointer px-2 py-0.5 outline-2 outline-black/70"
+            onClick={handleUnfollowUser}
+          >
+            Following
           </p>
-          {isFollow ? (
-            <p
-              className=" text-(--ig-primary-text) text-xs font-medium cursor-pointer px-2 py-0.5 outline-2 outline-black/70"
-              onClick={handleUnfollowUser}
-            >
-              Following
-            </p>
-          ) : (
-            <p
-              className=" text-(--ig-follow-text) py-1 text-xs font-medium hover:text-(--ig-follow-text-hover) cursor-pointer"
-              onClick={handleFollowUser}
-            >
-              Follow
-            </p>
-          )}
-        </div>
-      </HoverCardTrigger>
+        ) : (
+          <p
+            className=" text-(--ig-follow-text) py-1 text-xs font-medium hover:text-(--ig-follow-text-hover) cursor-pointer"
+            onClick={handleFollowUser}
+          >
+            Follow
+          </p>
+        )}
+      </div>
       <HoverCardContent
         className="w-90 p-0 rounded-3xl border-t ring-0 shadow-xl"
         align="start"

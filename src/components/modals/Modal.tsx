@@ -7,11 +7,12 @@ import {
 } from "@/components/ui/dialog";
 import type React from "react";
 type Props = {
-  title?: string;
+  title?: string | null;
   styleTitle?: string;
   children?: React.ReactNode;
   open: boolean;
   onClose: () => void;
+  widthContent?: string;
 };
 export default function Modal({
   title,
@@ -19,15 +20,14 @@ export default function Modal({
   children,
   open,
   onClose,
+  widthContent,
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className={widthContent}>
         <DialogHeader>
           {title && <DialogTitle className={styleTitle}>{title}</DialogTitle>}
-          <DialogDescription asChild>
-            <div>{children}</div>
-          </DialogDescription>
+          <DialogDescription asChild>{children}</DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>
