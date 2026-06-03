@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserStore } from "@/stores/user.store";
-import AvatarDefault from "../icons/AvatarDefault";
-import UserLoading from "../loading/UserLoading";
+import AvatarDefault from "../../icons/AvatarDefault";
+import UserLoading from "../../loading/UserLoading";
 export default function Profile() {
   const { user, isLoading } = useUserStore();
   return (

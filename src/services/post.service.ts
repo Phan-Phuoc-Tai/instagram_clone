@@ -1,6 +1,11 @@
 import { API } from "@/constants/config.constant";
 import { axiosInstance } from "@/lib/axios";
-import type { Post, PostResponse } from "@/types/post.type";
+import type {
+  CommentResponse,
+  Post,
+  PostResponse,
+  ReplyResponse,
+} from "@/types/post.type";
 
 export const postService = {
   getNewsFeed: async ({ pageParam = 1 }): Promise<PostResponse> => {
@@ -40,5 +45,49 @@ export const postService = {
     const response = await axiosInstance.delete(API.POSTS.SAVE_POST(postId));
     const { data } = response.data;
     return data;
+  },
+  getCommentsByPostId: async ({
+    pageParam = 1,
+    postId,
+  }: {
+    pageParam: number;
+    postId: string;
+  }): Promise<CommentResponse> => {
+    const limit = 8;
+    const offset = (pageParam - 1) * limit;
+    const response = await axiosInstance.get(
+      API.POSTS.COMMENTS_OF_POST(postId, limit, offset),
+    );
+    const { data } = response.data;
+    const { comments, total, limit: limitResponse } = data;
+    const totalPages = Math.floor(total / limitResponse);
+    return {
+      comments,
+      totalPages,
+      currentPage: pageParam,
+    };
+  },
+  getRepliesByCommentId: async ({
+    pageParam = 1,
+    postId,
+    commentId,
+  }: {
+    pageParam: number;
+    postId: string;
+    commentId: string;
+  }): Promise<ReplyResponse> => {
+    const limit = 3;
+    const offset = (pageParam - 1) * limit;
+    const response = await axiosInstance.get(
+      API.POSTS.REPLIES_OF_COMMENT(postId, commentId, limit, offset),
+    );
+    const { data } = response.data;
+    const { replies, total, limit: limitResponse } = data;
+    const totalPages = Math.floor(total / limitResponse);
+    return {
+      replies,
+      totalPages,
+      currentPage: pageParam,
+    };
   },
 };

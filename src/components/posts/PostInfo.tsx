@@ -14,8 +14,16 @@ import { useUserById } from "@/hooks/users/useUserById";
 import { useUnfollowUser } from "@/hooks/follows/useUnfollowUser";
 type Props = {
   userId: string;
+  showFullName?: boolean;
+  size: number;
+  position: "start" | "center";
 };
-export default function PostInfo({ userId }: Props) {
+export default function PostInfo({
+  userId,
+  showFullName,
+  size,
+  position,
+}: Props) {
   const { user, isLoading } = useUserById(userId);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const followUser = useFollowUser(user._id);
@@ -38,11 +46,13 @@ export default function PostInfo({ userId }: Props) {
   }, [user]);
 
   return (
-    <HoverCard openDelay={10} closeDelay={100}>
+    <HoverCard openDelay={500} closeDelay={100}>
       <HoverCardTrigger asChild className="my-2">
-        <div className="info flex items-center justify-between gap-3">
+        <div className={`info flex items-${position} justify-between gap-3`}>
           <div>
-            <Avatar className="flex items-center justify-center size-8 cursor-pointer">
+            <Avatar
+              className={`flex items-center justify-center size-${size} cursor-pointer`}
+            >
               <AvatarImage
                 src={
                   user.profilePicture
@@ -59,10 +69,15 @@ export default function PostInfo({ userId }: Props) {
           </div>
           {!isLoading && (
             <>
-              <div className="flex items-center gap-1 mr-auto text-sm cursor-pointer">
-                <span className="text-(--ig-primary-text) font-semibold ">
+              <div className=" mr-auto text-sm cursor-pointer">
+                <p className="text-(--ig-primary-text) text-base font-semibold ">
                   {user.username}
-                </span>
+                </p>
+                {showFullName && (
+                  <p className="text-(--ig-secondary-text) text-sm font-normal  ">
+                    {user.fullName}
+                  </p>
+                )}
               </div>
             </>
           )}

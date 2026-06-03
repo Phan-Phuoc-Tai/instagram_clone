@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useUserStore } from "@/stores/user.store";
-import AvatarDefault from "../icons/AvatarDefault";
+import AvatarDefault from "../../icons/AvatarDefault";
 import { useSuggestedUsers } from "@/hooks/users/useSuggestedUsers";
 export default function Story() {
   const BASE_URL = import.meta.env.VITE_BASE_URL;

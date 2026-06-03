@@ -4,14 +4,14 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
-import AvatarDefault from "../icons/AvatarDefault";
+import { Button } from "../../ui/button";
+import AvatarDefault from "../../icons/AvatarDefault";
 import type { UserSuggested } from "@/types/user.type";
 import { Send } from "lucide-react";
-import CameraIcon from "../icons/CameraIcon";
+import CameraIcon from "../../icons/CameraIcon";
 import { useFollowUser } from "@/hooks/follows/useFollowUser";
 import { useState } from "react";
-import { Spinner } from "../ui/spinner";
+import { Spinner } from "../../ui/spinner";
 import { useUnfollowUser } from "@/hooks/follows/useUnfollowUser";
 type Props = {
   suggestedUser: UserSuggested;
@@ -36,7 +36,7 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
   };
 
   return (
-    <HoverCard openDelay={10} closeDelay={100}>
+    <HoverCard openDelay={500} closeDelay={100}>
       <div className="flex items-center justify-between">
         <HoverCardTrigger asChild className="my-2">
           <div className="flex items-center justify-between gap-3 py-1">

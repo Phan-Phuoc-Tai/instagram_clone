@@ -1,14 +1,13 @@
 import { useInView } from "react-intersection-observer";
-import Post from "@/components/home/Post";
-import Story from "@/components/home/Story";
-import { PostContext } from "@/contexts/post.context";
+import Post from "@/components/posts/Post";
+import Story from "@/components/home/story&profile/Story";
 import React, { useEffect } from "react";
 import { POST_CONFIG } from "@/constants/post.constant";
 import PostLoading from "@/components/loading/PostLoading";
 import { useInfinitePosts } from "@/hooks/posts/useInfinitePosts";
 import Footer from "@/components/footer/Footer";
-import Profile from "@/components/home/Profile";
-import SuggestedUsers from "@/components/home/SuggestedUsers";
+import Profile from "@/components/home/story&profile/Profile";
+import SuggestedUsers from "@/components/home/suggestedUsers/SuggestedUsers";
 import CopyRight from "@/components/footer/CopyRight";
 
 export default function HomePage() {
@@ -34,14 +33,7 @@ export default function HomePage() {
               {pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.posts?.map((post) => (
-                    <PostContext
-                      key={post._id}
-                      value={{
-                        post,
-                      }}
-                    >
-                      <Post />
-                    </PostContext>
+                    <Post key={post._id} postId={post._id} />
                   ))}
                 </React.Fragment>
               ))}

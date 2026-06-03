@@ -1,6 +1,6 @@
 import React from "react";
 import { useSuggestedUsers } from "@/hooks/users/useSuggestedUsers";
-import UserLoading from "../loading/UserLoading";
+import UserLoading from "../../loading/UserLoading";
 import SuggestedUserCard from "./SuggestedUserCard";
 export default function SuggestedUsers() {
   const { suggestedUsers, isLoading } = useSuggestedUsers(5);

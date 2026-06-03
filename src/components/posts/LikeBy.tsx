@@ -87,7 +87,7 @@ export default function LikeBy({ userId }: Props) {
           </Button>
         ) : (
           <Button
-            className=" bg-(--primary-bg-button) text-white cursor-pointer ring-0 focus-visible:ring-0 border-0"
+            className=" bg-(--primary-bg-button) hover:bg-blue-500  text-white cursor-pointer ring-0 focus-visible:ring-0 border-0"
             onClick={handleFollowUser}
           >
             Follow
@@ -147,7 +147,7 @@ export default function LikeBy({ userId }: Props) {
               </>
             ) : isFollow ? (
               <>
-                <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer ring-0 focus-visible:ring-0 border-0">
+                <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-500 cursor-pointer ring-0 focus-visible:ring-0 border-0">
                   <Send />
                   <span>Message</span>
                 </Button>
@@ -161,7 +161,7 @@ export default function LikeBy({ userId }: Props) {
               </>
             ) : (
               <Button
-                className="bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer w-full ring-0 focus-visible:ring-0 border-0"
+                className="bg-(--primary-bg-button) hover:bg-blue-500 cursor-pointer w-full ring-0 focus-visible:ring-0 border-0"
                 onClick={handleFollowUser}
               >
                 Follow

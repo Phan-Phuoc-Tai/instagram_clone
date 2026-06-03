@@ -49,5 +49,16 @@ export const API = {
     SAVE_POST(postId: string) {
       return `/api/posts/${postId}/save`;
     },
+    COMMENTS_OF_POST(postId: string, limit: number, offset: number) {
+      return `/api/posts/${postId}/comments?limit=${limit}&offset=${offset}`;
+    },
+    REPLIES_OF_COMMENT(
+      postId: string,
+      commentId: string,
+      limit: number,
+      offset: number,
+    ) {
+      return `/api/posts/${postId}/comments/${commentId}/replies?limit=${limit}&offset=${offset}`;
+    },
   },
 };

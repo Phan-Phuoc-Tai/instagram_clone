@@ -1,6 +1,5 @@
 import { Bookmark, Heart, MessageCircle, Repeat, Send } from "lucide-react";
-import { use, useState } from "react";
-import { PostContext } from "@/contexts/post.context";
+import { useEffect, useState } from "react";
 import type { Post } from "@/types/post.type";
 import { cn } from "@/lib/utils";
 import PostInfo from "./PostInfo";
@@ -15,25 +14,28 @@ import { useSavePost } from "@/hooks/posts/useSavePost";
 import { useUnsavePost } from "@/hooks/posts/useUnsavePost";
 import LikeBy from "./LikeBy";
 import PostDetail from "./PostDetail";
-
-export default function Post() {
+import { usePostById } from "@/hooks/posts/usePostById";
+type Props = {
+  postId: string;
+};
+export default function Post({ postId }: Props) {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const context = use(PostContext);
+  const { post } = usePostById(postId);
   const {
     _id,
     userId,
     caption,
     image,
+    totalComments,
     video,
     mediaType,
-    comments,
     likedBy,
     createdAt,
-  } = context?.post as unknown as Post;
+  } = post;
   const { user, isLoading } = useUserById(userId?._id);
-  const [likes, setLikes] = useState(context?.post.likes);
-  const [isLiked, setIsLiked] = useState(context?.post.isLiked);
-  const [isSaved, setIsSaved] = useState(context?.post.isSaved);
+  const [likes, setLikes] = useState(post.likes);
+  const [isLiked, setIsLiked] = useState(post.isLiked);
+  const [isSaved, setIsSaved] = useState(post.isSaved);
   const [isOpenLikeBy, setIsOpenLikeBy] = useState(false);
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
   const likePost = useLikePost();
@@ -58,11 +60,21 @@ export default function Post() {
     const result = await unsavePost.mutateAsync(_id);
     setIsSaved(result.isSaved);
   };
+  useEffect(() => {
+    setLikes(post.likes);
+    setIsLiked(post.isLiked);
+    setIsSaved(post.isSaved);
+  }, [post]);
+
   return (
     <>
       <article className="max-w-117.5 w-full pb-4 mb-5">
         <div className="flex items-center justify-between gap-1 pl-3.5 pr-2.5 pb-3">
-          <PostInfo userId={userId ? userId._id : "null"} />
+          <PostInfo
+            userId={userId ? userId._id : "null"}
+            size={8}
+            position="center"
+          />
           <div className="mr-auto flex items-center gap-1 text-sm">
             <span className="block w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
             <span className="text-(--ig-secondary-text) font-normal">
@@ -79,13 +91,13 @@ export default function Post() {
           {mediaType === "image" ? (
             <img
               src={image ? `${BASE_URL}${image}` : `${BASE_URL}/null`}
-              className="w-full object-cover rounded-sm text-(--ig-secondary-text)"
+              className="min-h-48 w-full object-cover rounded-sm text-(--ig-secondary-text)"
               alt={`Image's ${user.username}`}
             />
           ) : (
             <video
               src={video ? `${BASE_URL}${video}` : `${BASE_URL}/null`}
-              className="w-full object-cover rounded-sm"
+              className="min-h-48 w-full object-cover rounded-sm"
               muted
               loop
               autoPlay
@@ -120,12 +132,12 @@ export default function Post() {
               <p className="p-2" onClick={() => setIsOpenPostDetail(true)}>
                 <MessageCircle className="cursor-pointer hover:scale-110 transition-transform duration-300 ease-in-out" />
               </p>
-              {comments! > 0 && (
+              {totalComments! > 0 && (
                 <span
                   className="-ml-0.5 mr-1 text-(--ig-primary-text) text-sm font-medium cursor-pointer"
                   onClick={() => setIsOpenPostDetail(true)}
                 >
-                  {comments}
+                  {totalComments}
                 </span>
               )}
             </div>
@@ -165,9 +177,9 @@ export default function Post() {
           onClose={() => setIsOpenLikeBy(false)}
           title="Likes"
           styleTitle="text-center"
-          widthContent="sm:max-w-140 max-h-100"
+          styleContent="sm:max-w-140 max-h-100 bg-white ring-1 ring-foreground/10"
         >
-          <ScrollArea className="border-t -mx-4 px-4 max-h-86 ">
+          <ScrollArea className="border-t -mx-4 px-4 max-h-86  ">
             {likedBy.map((userId, index) => (
               <LikeBy userId={userId} key={index} />
             ))}
@@ -175,13 +187,15 @@ export default function Post() {
         </Modal>
       )}
       {isOpenPostDetail && (
-        <CommandCustom
-          open={isOpenPostDetail}
-          onClose={() => setIsOpenPostDetail(false)}
-          widthContent="rounded-none! sm:max-w-auto top-4 max-w-100% "
-        >
-          <PostDetail postId={_id} />
-        </CommandCustom>
+        <>
+          <CommandCustom
+            open={isOpenPostDetail}
+            onClose={() => setIsOpenPostDetail(false)}
+            widthContent="rounded-none! sm:max-w-305 top-6 max-w-full w-full bg-none"
+          >
+            <PostDetail postId={_id} />
+          </CommandCustom>
+        </>
       )}
     </>
   );

@@ -9,7 +9,7 @@ export type Post = {
   video: string | null;
   mediaType: string;
   likes: number;
-  comments: number;
+  totalComments: number;
   likedBy: [];
   savedBy: [];
   createdAt: string;
@@ -17,8 +17,40 @@ export type Post = {
   isSaved: boolean;
 };
 
+export interface CommentReply {
+  _id: string;
+  postId: string;
+  userId: {
+    _id: string;
+    email: string;
+    username: string;
+  };
+  parentCommentId: string | null;
+  content: string;
+  likes: number;
+  likedBy: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Comment extends CommentReply {
+  replies: CommentReply[];
+}
+
 export type PostResponse = {
   posts: Post[];
+  totalPages: number;
+  currentPage: number;
+};
+
+export type CommentResponse = {
+  comments: Comment[];
+  totalPages: number;
+  currentPage: number;
+};
+
+export type ReplyResponse = {
+  replies: CommentReply[];
   totalPages: number;
   currentPage: number;
 };

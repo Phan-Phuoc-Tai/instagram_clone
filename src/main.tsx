@@ -6,6 +6,13 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner.tsx";
 const queryClient = new QueryClient();
+declare global {
+  interface Window {
+    __TANSTACK_QUERY_CLIENT__: import("@tanstack/query-core").QueryClient;
+  }
+}
+
+window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 const renderApp = () =>
   createRoot(document.getElementById("root")!).render(
     <StrictMode>

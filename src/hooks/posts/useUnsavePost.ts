@@ -36,6 +36,8 @@ export const useUnsavePost = () => {
           };
         },
       );
+      queryClient.invalidateQueries({ queryKey: CACHE.POSTS.LIST });
+      queryClient.invalidateQueries({ queryKey: CACHE.POSTS.DETAIL(data._id) });
     },
   });
   return unsavePost;

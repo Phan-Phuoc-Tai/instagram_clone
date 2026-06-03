@@ -12,7 +12,7 @@ type Props = {
   children?: React.ReactNode;
   open: boolean;
   onClose: () => void;
-  widthContent?: string;
+  styleContent?: string;
 };
 export default function Modal({
   title,
@@ -20,11 +20,11 @@ export default function Modal({
   children,
   open,
   onClose,
-  widthContent,
+  styleContent,
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className={widthContent}>
+      <DialogContent className={styleContent}>
         <DialogHeader>
           {title && <DialogTitle className={styleTitle}>{title}</DialogTitle>}
           <DialogDescription asChild>{children}</DialogDescription>

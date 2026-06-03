@@ -1,4 +1,5 @@
 import { Command, CommandDialog } from "@/components/ui/command";
+
 type Props = {
   children?: React.ReactNode;
   open: boolean;
@@ -12,8 +13,14 @@ export default function CommandCustom({
   widthContent,
 }: Props) {
   return (
-    <CommandDialog open={open} onOpenChange={onClose} className={widthContent}>
-      <Command>{children}</Command>
-    </CommandDialog>
+    <>
+      <CommandDialog
+        open={open}
+        onOpenChange={onClose}
+        className={widthContent}
+      >
+        <Command>{children}</Command>
+      </CommandDialog>
+    </>
   );
 }
