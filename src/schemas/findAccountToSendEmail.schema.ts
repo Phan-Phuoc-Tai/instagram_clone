@@ -2,7 +2,7 @@ import { FORM_LOGIN } from "@/constants/auth.constant";
 import z from "zod";
 
 const ZOD_ERRORS = FORM_LOGIN.ZOD_ERRORS;
-export const findAccountSchema = z.object({
+export const findAccountToSendEmailSchema = z.object({
   email: z
     .string()
     .trim()

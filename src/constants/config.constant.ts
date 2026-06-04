@@ -60,5 +60,14 @@ export const API = {
     ) {
       return `/api/posts/${postId}/comments/${commentId}/replies?limit=${limit}&offset=${offset}`;
     },
+    CREATE_COMMENT(postId: string) {
+      return `/api/posts/${postId}/comments`;
+    },
+    CREATE_REPLY_COMMENT(postId: string, commentId: string) {
+      return `/api/posts/${postId}/comments/${commentId}/replies`;
+    },
+    LIKE_COMMENT(postId: string, commentId: string) {
+      return `/api/posts/${postId}/comments/${commentId}/like`;
+    },
   },
 };

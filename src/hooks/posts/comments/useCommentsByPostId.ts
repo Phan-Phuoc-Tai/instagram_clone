@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useCommentsByPostId = (postId: string) => {
   const query = useInfiniteQuery({
-    queryKey: CACHE.POSTS.COMMENTS_OF_POST(postId),
+    queryKey: CACHE.POSTS.COMMENTS(postId),
     queryFn: ({ pageParam }) =>
       postService.getCommentsByPostId({ pageParam, postId }),
     initialPageParam: 1,

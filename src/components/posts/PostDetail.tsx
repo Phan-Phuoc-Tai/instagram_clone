@@ -2,7 +2,7 @@ import { usePostById } from "@/hooks/posts/usePostById";
 import PostInfo from "./PostInfo";
 import { formatTimePost } from "@/utils/formatTime";
 import { Bookmark, Heart, MessageCircle, Repeat, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLikePost } from "@/hooks/posts/useLikePost";
 import { useUnlikePost } from "@/hooks/posts/useUnlikePost";
 import { useSavePost } from "@/hooks/posts/useSavePost";
@@ -13,6 +13,10 @@ import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Comments from "./Comments";
 import { useCommentsByPostId } from "@/hooks/posts/comments/useCommentsByPostId";
+import { useForm } from "react-hook-form";
+import { useCreateComment } from "@/hooks/posts/comments/useCreateComment";
+import { PostContext } from "@/contexts/post.context";
+import { useCreateReplyComment } from "@/hooks/posts/comments/useCreateReplyComment";
 type Props = {
   postId: string;
 };
@@ -46,6 +50,35 @@ export default function PostDetail({ postId }: Props) {
     const result = await unsavePost.mutateAsync(_id);
     setIsSaved(result.isSaved);
   };
+  const createComment = useCreateComment(_id);
+  const createReplyComment = useCreateReplyComment(_id);
+  const { handleSubmit, register, reset, setValue, setFocus } = useForm<{
+    content: string;
+  }>();
+  const [isReply, setIsReply] = useState(false);
+  const [commentId, setCommentId] = useState("");
+  const [userComment, setUserComment] = useState("");
+  const onSubmit = (data: { content: string }) => {
+    if (!isReply) {
+      createComment.mutate(data.content);
+      reset();
+      return;
+    }
+    const content = data.content.slice(data.content.indexOf(" ") + 1);
+    createReplyComment.mutate({ commentId, content });
+    setIsReply(false);
+    setCommentId("");
+    setUserComment("");
+    reset();
+  };
+  useEffect(() => {
+    if (isReply) {
+      setValue("content", `@${userComment} `);
+      setFocus("content", {
+        shouldSelect: false,
+      });
+    }
+  }, [isReply, setValue, setFocus, userComment]);
   return (
     <>
       {status === "pending" ? (
@@ -100,7 +133,16 @@ export default function PostDetail({ postId }: Props) {
                   {formatTimePost(createdAt)}
                 </div>
               </div>
-              <Comments postId={_id} />
+              <PostContext
+                value={{
+                  setIsReply,
+                  setCommentId,
+                  setUserComment,
+                  postId: _id,
+                }}
+              >
+                <Comments postId={_id} />
+              </PostContext>
             </ScrollArea>
             <div className="action flex-1 grow ">
               <div className="px-4 border-t">
@@ -150,7 +192,7 @@ export default function PostDetail({ postId }: Props) {
                 <div className="mb-4">
                   {likes! > 0 ? (
                     <p className=" text-(--ig-primary-text) text-sm font-medium cursor-pointer hover:underline">
-                      {likes} likes
+                      {likes} {likes > 1 ? "likes" : "like"}
                     </p>
                   ) : (
                     <p className=" text-(--ig-primary-text) text-sm cursor-pointer">
@@ -168,12 +210,16 @@ export default function PostDetail({ postId }: Props) {
                   </p>
                 </div>
               </div>
-              <form className="flex grow items-center justify-between px-4 py-2.5 border-t ">
+              <form
+                className="flex grow items-center justify-between px-4 py-2.5 border-t "
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <Textarea
                   autoComplete="off"
                   autoCorrect="off"
                   className="focus-visible:ring-0 border-0 outline-0 flex-1 appearance-none text-sm max-h-20 max-w-full overflow-auto min-h-4.5 px-0 py-0 rounded-none"
                   placeholder="Add a comment..."
+                  {...register("content")}
                 />
                 <Button className="ml-2 px-0  text-(--ig-colors-link-text) bg-white hover:bg-transparent cursor-pointer hover:underline">
                   Post

@@ -1,6 +1,7 @@
 import { API } from "@/constants/config.constant";
 import { axiosInstance } from "@/lib/axios";
 import type {
+  Comment,
   CommentResponse,
   Post,
   PostResponse,
@@ -14,7 +15,7 @@ export const postService = {
     const response = await axiosInstance(API.POSTS.NEWS_FEED(limit, offset));
     const { data } = response.data;
     const { total, limit: limitResponse, posts } = data;
-    const totalPages = Math.floor(total / limitResponse);
+    const totalPages = Math.ceil(total / limitResponse);
     return {
       posts,
       totalPages,
@@ -53,14 +54,14 @@ export const postService = {
     pageParam: number;
     postId: string;
   }): Promise<CommentResponse> => {
-    const limit = 8;
+    const limit = 10;
     const offset = (pageParam - 1) * limit;
     const response = await axiosInstance.get(
       API.POSTS.COMMENTS_OF_POST(postId, limit, offset),
     );
     const { data } = response.data;
     const { comments, total, limit: limitResponse } = data;
-    const totalPages = Math.floor(total / limitResponse);
+    const totalPages = Math.ceil(total / limitResponse);
     return {
       comments,
       totalPages,
@@ -83,11 +84,53 @@ export const postService = {
     );
     const { data } = response.data;
     const { replies, total, limit: limitResponse } = data;
-    const totalPages = Math.floor(total / limitResponse);
+    const totalPages = Math.ceil(total / limitResponse);
     return {
       replies,
       totalPages,
       currentPage: pageParam,
     };
+  },
+  createComment: async (postId: string, content: string): Promise<Comment> => {
+    const response = await axiosInstance.post(
+      API.POSTS.CREATE_COMMENT(postId),
+      {
+        content,
+        parentCommentId: null,
+      },
+    );
+    const { data } = response.data;
+    return data;
+  },
+  createReplyComment: async (
+    postId: string,
+    commentId: string,
+    content: string,
+  ): Promise<Comment> => {
+    const response = await axiosInstance.post(
+      API.POSTS.CREATE_REPLY_COMMENT(postId, commentId),
+      {
+        content,
+      },
+    );
+    const { data } = response.data;
+    return data;
+  },
+  likeComment: async (postId: string, commentId: string): Promise<Comment> => {
+    const response = await axiosInstance.post(
+      API.POSTS.LIKE_COMMENT(postId, commentId),
+    );
+    const { data } = response.data;
+    return data;
+  },
+  unlikeComment: async (
+    postId: string,
+    commentId: string,
+  ): Promise<Comment> => {
+    const response = await axiosInstance.delete(
+      API.POSTS.LIKE_COMMENT(postId, commentId),
+    );
+    const { data } = response.data;
+    return data;
   },
 };

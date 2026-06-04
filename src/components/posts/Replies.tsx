@@ -21,6 +21,7 @@ export default function Replies({ commentId, postId }: Props) {
   const handleHideReplies = () => {
     setIsShowReplies(false);
   };
+
   return (
     <>
       {!isShowReplies && pages[0]?.replies.length > 0 ? (
@@ -86,72 +87,3 @@ export default function Replies({ commentId, postId }: Props) {
     </>
   );
 }
-
-/*
-{pages.map((page, index) => (
-        <React.Fragment key={index}>
-          {!isShowReplies && page.replies.length > 0 ? (
-            <div
-              className="flex items-center gap-3 ml-14 cursor-pointer"
-              onClick={() => setIsShowReplies(true)}
-            >
-              <p className="w-6 h-px bg-(--ig-secondary-text)"></p>
-              <p className="text-(--ig-secondary-text) text-xs">View replies</p>
-            </div>
-          ) : (
-            <>
-              {page.replies.map((reply) => (
-                <div key={reply._id} className="relative ml-13.5">
-                  <div className="flex text-base gap-1 pt-1.75">
-                    <PostInfo
-                      userId={reply.userId ? reply.userId._id : "null"}
-                      showFullName={false}
-                      size={11}
-                      position="start"
-                    />
-                    <div className="my-2">{reply.content}</div>
-                  </div>
-                  <div className="absolute bottom-1 left-14 text-(--ig-secondary-text) text-xs font-semibold flex items-center gap-3">
-                    <p>{formatTimePost(reply.createdAt)}</p>
-                    <div>Reply</div>
-                  </div>
-                </div>
-              ))}
-              {isFetchingNextPage ? (
-                <div className="w-10 h-10 mx-auto flex items-center justify-center p-px">
-                  <Spinner />
-                </div>
-              ) : hasNextPage && !ignorePageFetched.includes(index) ? (
-                <div
-                  className="flex items-center gap-3 ml-28 cursor-pointer"
-                  onClick={() => handleViewMoreRepliesComment(index)}
-                >
-                  <p className="w-6 h-px bg-(--ig-secondary-text)"></p>
-                  <p className="text-(--ig-secondary-text) text-xs">
-                    View more replies
-                  </p>
-                </div>
-              ) : (
-                <></>
-              )}
-              {page.replies.length > 0 &&
-              !hasNextPage &&
-              !ignorePageFetched.includes(index) ? (
-                <div className="flex items-center gap-3 ml-28 cursor-pointer">
-                  <p className="w-6 h-px bg-(--ig-secondary-text)"></p>
-                  <p
-                    className="text-(--ig-secondary-text) text-xs"
-                    onClick={handleHideReplies}
-                  >
-                    Hide replies
-                  </p>
-                </div>
-              ) : (
-                <></>
-              )}
-            </>
-          )}
-        </React.Fragment>
-      ))}
-
-*/

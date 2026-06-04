@@ -6,7 +6,7 @@ import Email from "@/components/form/Email";
 import { FORGOT_PASSWORD, FORM_CONFIG } from "@/constants/auth.constant";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { findAccountSchema } from "@/schemas/findAccount.schema";
+import { findAccountToSendEmailSchema } from "@/schemas/findAccountToSendEmail.schema";
 import SubmitBtn from "@/components/form/SubmitBtn";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
     reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
-    resolver: zodResolver(findAccountSchema),
+    resolver: zodResolver(findAccountToSendEmailSchema),
     mode: "onChange",
     defaultValues: {
       email: "",

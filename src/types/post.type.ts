@@ -35,6 +35,7 @@ export interface CommentReply {
 
 export interface Comment extends CommentReply {
   replies: CommentReply[];
+  isLiked: boolean;
 }
 
 export type PostResponse = {

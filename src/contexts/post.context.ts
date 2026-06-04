@@ -1,7 +1,11 @@
-import type { Post } from "@/types/post.type";
-import { createContext } from "react";
+import React, { createContext } from "react";
 type PostContextType = {
-  post: Post;
+  setIsReply: React.Dispatch<React.SetStateAction<boolean>>;
+  setCommentId: React.Dispatch<React.SetStateAction<string>>;
+  setUserComment: React.Dispatch<React.SetStateAction<string>>;
+  postId: string;
 };
 
-export const PostContext = createContext<PostContextType | null>(null);
+export const PostContext = createContext<PostContextType>(
+  {} as PostContextType,
+);
