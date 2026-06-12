@@ -40,7 +40,8 @@ export const API = {
     NEWS_FEED(limit: number, offset: number) {
       return `/api/posts/feed?limit=${limit}&offset=${offset}`;
     },
-    POST_DETAIL(postId: string) {
+    POST: "/api/posts",
+    POST_ID(postId: string) {
       return `/api/posts/${postId}`;
     },
     LIKE_POST(postId: string) {

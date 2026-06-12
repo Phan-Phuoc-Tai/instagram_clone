@@ -11,12 +11,13 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Comments from "./Comments";
+
 import { useCommentsByPostId } from "@/hooks/posts/comments/useCommentsByPostId";
 import { useForm } from "react-hook-form";
 import { useCreateComment } from "@/hooks/posts/comments/useCreateComment";
 import { PostContext } from "@/contexts/post.context";
 import { useCreateReplyComment } from "@/hooks/posts/comments/useCreateReplyComment";
+import Comments from "./comments/Comments";
 type Props = {
   postId: string;
 };

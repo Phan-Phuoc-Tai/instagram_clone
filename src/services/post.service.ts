@@ -23,10 +23,28 @@ export const postService = {
     };
   },
   getPostById: async (postId: string): Promise<Post> => {
-    const response = await axiosInstance.get(API.POSTS.POST_DETAIL(postId));
+    const response = await axiosInstance.get(API.POSTS.POST_ID(postId));
     const { data } = response.data;
     return data;
   },
+  createPost: async (file: File, caption: string): Promise<Post> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("caption", caption);
+    const response = await axiosInstance.post(API.POSTS.POST, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const { data } = response.data;
+    return data;
+  },
+  deletePost: async (postId: string) => {
+    const response = await axiosInstance.delete(API.POSTS.POST_ID(postId));
+    const { success } = response.data;
+    return success;
+  },
+
   likePost: async (postId: string): Promise<Post> => {
     const response = await axiosInstance.post(API.POSTS.LIKE_POST(postId));
     const { data } = response.data;

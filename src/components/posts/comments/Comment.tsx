@@ -1,14 +1,15 @@
 import type { Comment } from "@/types/post.type";
 import { use, useEffect, useState } from "react";
-import PostInfo from "./PostInfo";
+import PostInfo from "../PostInfo";
 import { PostContext } from "@/contexts/post.context";
 import { useLikeComment } from "@/hooks/posts/comments/useLikeComment";
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatTimePost } from "@/utils/formatTime";
-import Replies from "./Replies";
+
 import { useUserStore } from "@/stores/user.store";
 import { useUnlikeComment } from "@/hooks/posts/comments/useUnlikeComment";
+import Replies from "./Replies";
 type Props = {
   comment: Comment;
 };
@@ -17,6 +18,7 @@ export default function Comment({ comment }: Props) {
   const { user } = useUserStore();
   const [likes, setLikes] = useState(comment.likes);
   const [isLiked, setIsLiked] = useState(comment.isLiked);
+  const [isShowReplies, setIsShowReplies] = useState(false);
   const handleReplyComment = (commentId: string, userComment: string) => {
     setIsReply(true);
     setCommentId(commentId);
@@ -33,6 +35,9 @@ export default function Comment({ comment }: Props) {
     const result = await unlikeComment.mutateAsync(comment._id);
     setLikes(result.likes);
     setIsLiked(result.isLiked);
+  };
+  const handleShowReplies = () => {
+    setIsShowReplies(true);
   };
   useEffect(() => {
     const handleSetLiked = () => {
@@ -88,9 +93,26 @@ export default function Comment({ comment }: Props) {
           </p>
         </div>
       </div>
-      <div className="replies">
-        <Replies commentId={comment._id} postId={postId} />
-      </div>
+      {comment.replies.length > 0 && !isShowReplies ? (
+        <div
+          className="flex items-center gap-3 ml-14 cursor-pointer hover:underline"
+          onClick={handleShowReplies}
+        >
+          <p className="w-6 h-px bg-(--ig-secondary-text)"></p>
+          <p className="text-(--ig-secondary-text) text-xs">View replies</p>
+        </div>
+      ) : isShowReplies ? (
+        <div className="replies">
+          <Replies
+            commentId={comment._id}
+            postId={postId}
+            isShowReplies={isShowReplies}
+            setIsShowReplies={setIsShowReplies}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

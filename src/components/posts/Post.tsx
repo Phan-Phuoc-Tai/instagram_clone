@@ -15,6 +15,7 @@ import { useUnsavePost } from "@/hooks/posts/useUnsavePost";
 import LikeBy from "./LikeBy";
 import PostDetail from "./PostDetail";
 import { usePostById } from "@/hooks/posts/usePostById";
+import PostOptions from "./PostOptions";
 type Props = {
   postId: string;
 };
@@ -42,6 +43,7 @@ export default function Post({ postId }: Props) {
   const unlikePost = useUnlikePost();
   const savePost = useSavePost();
   const unsavePost = useUnsavePost();
+
   const handleLikePost = async () => {
     const result = await likePost.mutateAsync(_id);
     setLikes(result.likes);
@@ -81,11 +83,11 @@ export default function Post({ postId }: Props) {
               {formatTimePost(createdAt)}
             </span>
           </div>
-          <div className="w-5 h-5 flex items-center justify-center gap-0.5">
-            <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-            <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-            <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-          </div>
+          <PostOptions
+            isFollowing={user.isFollowing}
+            userId={userId && userId._id}
+            postId={_id}
+          />
         </div>
         <div className="image w-117 ">
           {mediaType === "image" ? (
@@ -192,6 +194,7 @@ export default function Post({ postId }: Props) {
             open={isOpenPostDetail}
             onClose={() => setIsOpenPostDetail(false)}
             widthContent="rounded-none! sm:max-w-305 top-6 max-w-full w-full bg-none"
+            showCloseBtn={true}
           >
             <PostDetail postId={_id} />
           </CommandCustom>

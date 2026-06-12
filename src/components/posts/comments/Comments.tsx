@@ -1,6 +1,6 @@
 import React from "react";
 import { useCommentsByPostId } from "@/hooks/posts/comments/useCommentsByPostId";
-import { Spinner } from "../ui/spinner";
+import { Spinner } from "../../ui/spinner";
 import { Plus } from "lucide-react";
 
 import Comment from "./Comment";

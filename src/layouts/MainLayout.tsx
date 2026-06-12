@@ -8,6 +8,7 @@ export default function MainLayout() {
   useEffect(() => {
     refetchUser();
   }, []);
+
   return (
     <div>
       <SidebarIns />
