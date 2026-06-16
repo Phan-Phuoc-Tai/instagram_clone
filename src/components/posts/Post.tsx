@@ -15,7 +15,7 @@ import { useUnsavePost } from "@/hooks/posts/useUnsavePost";
 import LikeBy from "./LikeBy";
 import PostDetail from "./PostDetail";
 import { usePostById } from "@/hooks/posts/usePostById";
-import PostOptions from "./PostOptions";
+import PostOption from "./PostOption";
 type Props = {
   postId: string;
 };
@@ -25,7 +25,6 @@ export default function Post({ postId }: Props) {
   const {
     _id,
     userId,
-    caption,
     image,
     totalComments,
     video,
@@ -34,6 +33,7 @@ export default function Post({ postId }: Props) {
     createdAt,
   } = post;
   const { user, isLoading } = useUserById(userId?._id);
+  const [caption, setCaption] = useState(post.caption);
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [isSaved, setIsSaved] = useState(post.isSaved);
@@ -66,6 +66,7 @@ export default function Post({ postId }: Props) {
     setLikes(post.likes);
     setIsLiked(post.isLiked);
     setIsSaved(post.isSaved);
+    setCaption(post.caption);
   }, [post]);
 
   return (
@@ -83,7 +84,7 @@ export default function Post({ postId }: Props) {
               {formatTimePost(createdAt)}
             </span>
           </div>
-          <PostOptions
+          <PostOption
             isFollowing={user.isFollowing}
             userId={userId && userId._id}
             postId={_id}

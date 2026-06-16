@@ -39,6 +39,13 @@ export const postService = {
     const { data } = response.data;
     return data;
   },
+  updatePost: async (postId: string, caption: string): Promise<Post> => {
+    const response = await axiosInstance.patch(API.POSTS.POST_ID(postId), {
+      caption,
+    });
+    const { data } = response.data;
+    return data;
+  },
   deletePost: async (postId: string) => {
     const response = await axiosInstance.delete(API.POSTS.POST_ID(postId));
     const { success } = response.data;
@@ -150,5 +157,12 @@ export const postService = {
     );
     const { data } = response.data;
     return data;
+  },
+  deleteComment: async (postId: string, commentId: string) => {
+    const response = await axiosInstance.delete(
+      API.POSTS.DELETE_COMMENT(postId, commentId),
+    );
+    const { success } = response.data;
+    return success;
   },
 };

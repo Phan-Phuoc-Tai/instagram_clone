@@ -9,7 +9,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
-import ExplorePage from "./pages/ExplorePage";
+import ProfilePage from "./pages/ProfilePage";
 
 export default function App() {
   return (
@@ -33,7 +33,7 @@ export default function App() {
         </Route>
         <Route element={<MainLayout />}>
           <Route path={CONFIG.HOME} element={<HomePage />} />
-          <Route path={CONFIG.EXPLORE} element={<ExplorePage />} />
+          <Route path={`${CONFIG.PROFILE}/:userId`} element={<ProfilePage />} />
         </Route>
       </Routes>
     </>

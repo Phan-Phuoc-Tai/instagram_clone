@@ -11,13 +11,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
+import CommandCustom from "../modals/CommandCustom";
 import { useCommentsByPostId } from "@/hooks/posts/comments/useCommentsByPostId";
 import { useForm } from "react-hook-form";
 import { useCreateComment } from "@/hooks/posts/comments/useCreateComment";
 import { PostContext } from "@/contexts/post.context";
 import { useCreateReplyComment } from "@/hooks/posts/comments/useCreateReplyComment";
 import Comments from "./comments/Comments";
+import PostDetailOption from "./PostDetailOption";
 type Props = {
   postId: string;
 };
@@ -29,6 +30,7 @@ export default function PostDetail({ postId }: Props) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [isSaved, setIsSaved] = useState(post.isSaved);
+  const [isOpenPostDetailOption, setIsOpenPostDetailOption] = useState(false);
   const likePost = useLikePost();
   const unlikePost = useUnlikePost();
   const savePost = useSavePost();
@@ -72,6 +74,12 @@ export default function PostDetail({ postId }: Props) {
     setUserComment("");
     reset();
   };
+  const handleClosePostDetailOption = () => {
+    setIsOpenPostDetailOption(false);
+  };
+  const handleOpenPostDetailOption = () => {
+    setIsOpenPostDetailOption(true);
+  };
   useEffect(() => {
     if (isReply) {
       setValue("content", `@${userComment} `);
@@ -113,11 +121,14 @@ export default function PostDetail({ postId }: Props) {
                   position="center"
                 />
               </div>
-              <div className="w-10 h-10 p-2 flex items-center justify-center gap-0.5">
+              <button
+                className="w-10 h-10 p-2 flex items-center justify-center gap-0.5"
+                onClick={handleOpenPostDetailOption}
+              >
                 <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
                 <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
                 <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) "></span>
-              </div>
+              </button>
             </div>
             <ScrollArea className="caption&comment max-h-166.5 p-4 flex-4">
               <div className="relative">
@@ -229,6 +240,20 @@ export default function PostDetail({ postId }: Props) {
             </div>
           </div>
         </div>
+      )}
+      {isOpenPostDetailOption && (
+        <CommandCustom
+          open={isOpenPostDetailOption}
+          onClose={handleClosePostDetailOption}
+          widthContent="sm:max-w-140 max-w-full w-full bg-none"
+          showCloseBtn={false}
+        >
+          <PostDetailOption
+            userId={userId && userId._id}
+            postId={postId}
+            onClose={handleClosePostDetailOption}
+          />
+        </CommandCustom>
       )}
     </>
   );

@@ -1,6 +1,6 @@
 export const CONFIG = {
   HOME: "/",
-  EXPLORE: "/explore",
+  PROFILE: "/profile",
   LOGIN: "/login",
   REGISTER: "/register",
   VERIFY_EMAIL: "/verify-email",
@@ -35,6 +35,12 @@ export const API = {
     FOLLOW_USER(userId: string) {
       return `/api/follow/${userId}/follow`;
     },
+    FOLLOWERS(userId: string, limit: number, page: number) {
+      return `/api/follow/${userId}/followers?limit=${limit}&page=${page}`;
+    },
+    FOLLOWING(userId: string, limit: number, page: number) {
+      return `/api/follow/${userId}/following?limit=${limit}&page=${page}`;
+    },
   },
   POSTS: {
     NEWS_FEED(limit: number, offset: number) {
@@ -63,6 +69,9 @@ export const API = {
     },
     CREATE_COMMENT(postId: string) {
       return `/api/posts/${postId}/comments`;
+    },
+    DELETE_COMMENT(postId: string, commentId: string) {
+      return `/api/posts/${postId}/comments/${commentId}`;
     },
     CREATE_REPLY_COMMENT(postId: string, commentId: string) {
       return `/api/posts/${postId}/comments/${commentId}/replies`;

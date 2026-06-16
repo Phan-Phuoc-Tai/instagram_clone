@@ -2,7 +2,6 @@ import Instagram from "../icons/Instagram";
 import HomeIcon from "../icons/HomeIcon";
 import { NavLink } from "react-router-dom";
 import { CONFIG } from "@/constants/config.constant";
-import ExploreIcon from "../icons/ExploreIcon";
 import { cn } from "@/lib/utils";
 import ReelsIcon from "../icons/ReelsIcon";
 import MessageIcon from "../icons/MessageIcon";
@@ -13,12 +12,14 @@ import Profile from "./Profile";
 import { useState } from "react";
 import CommandCustom from "../modals/CommandCustom";
 import CreatePost from "../posts/CreatePost";
+import { useUserStore } from "@/stores/user.store";
 
 export default function SidebarIns() {
   const ITEM_CSS = {
     DIV: "flex items-center gap-4 p-3 my-1 hover:bg-black/5 cursor-pointer rounded-lg overflow-hidden",
     SPAN: "opacity-0 group-hover:opacity-100 -translate-x-3 group-hover:translate-x-0 transition-transform ease-in-out duration-300",
   };
+  const { user } = useUserStore();
   const [isCreatePost, setIsCreatePost] = useState(false);
   const handleOpenCreatePost = () => {
     setIsCreatePost(true);
@@ -61,19 +62,6 @@ export default function SidebarIns() {
             <SearchIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Search</span>
           </li>
-          <NavLink
-            to={CONFIG.EXPLORE}
-            children={({ isActive }) => (
-              <div className={ITEM_CSS.DIV}>
-                <ExploreIcon isActive={isActive} className="w-6 h-6" />
-                <span
-                  className={cn(ITEM_CSS.SPAN, isActive && "font-semibold")}
-                >
-                  Explore
-                </span>
-              </div>
-            )}
-          />
           <li className={ITEM_CSS.DIV}>
             <NotificationsIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Notifications</span>
@@ -82,10 +70,13 @@ export default function SidebarIns() {
             <CreateIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Create</span>
           </li>
-          <li className={ITEM_CSS.DIV}>
+          <NavLink
+            to={`${CONFIG.PROFILE}/${user._id}`}
+            className={ITEM_CSS.DIV}
+          >
             <Profile />
             <span className={cn(ITEM_CSS.SPAN)}>Profile</span>
-          </li>
+          </NavLink>
         </ul>
         <div>Logout</div>
       </aside>

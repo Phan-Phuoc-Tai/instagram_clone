@@ -1,11 +1,14 @@
 import { FOOTER_CONFIG } from "@/constants/footer.constant";
 import { ChevronDown } from "lucide-react";
 import CopyRight from "./CopyRight";
-
-export default function Footer() {
+import { cn } from "@/lib/utils";
+type Props = {
+  showBorder?: boolean;
+};
+export default function Footer({ showBorder }: Props) {
   const LIST = FOOTER_CONFIG.LIST;
   return (
-    <div className="border-t-2 py-6">
+    <div className={cn("border-t-2 py-6", !showBorder && "border-0")}>
       <ul className="flex items-center justify-center gap-4  pb-3  text-(--secondary-text) text-xs">
         {LIST.map((item, index) => (
           <li key={index} className="hover:underline cursor-pointer">

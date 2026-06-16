@@ -7,16 +7,20 @@ import {
 import { POST_CONFIG } from "@/constants/post.constant";
 import { useDeletePost } from "@/hooks/posts/useDeletePost";
 import { useUserStore } from "@/stores/user.store";
+import { useState } from "react";
 import { toast } from "sonner";
+import CommandCustom from "../modals/CommandCustom";
+import UpdatePost from "./UpdatePost";
 type Props = {
   isFollowing: boolean;
   userId: string;
   postId: string;
 };
-export default function PostOptions({ isFollowing, userId, postId }: Props) {
+export default function PostOption({ isFollowing, userId, postId }: Props) {
   const { user } = useUserStore();
   const isOwner = user._id === userId;
   const deletePost = useDeletePost(postId);
+  const [isOpenEditPost, setIsOpenEditPost] = useState(false);
   const handleDeletePost = () => {
     toast.promise(deletePost.mutateAsync(), {
       loading: POST_CONFIG.LOADING,
@@ -24,7 +28,12 @@ export default function PostOptions({ isFollowing, userId, postId }: Props) {
       success: POST_CONFIG.SUCCESS.DELETE_POST,
     });
   };
-
+  const handleCloseEditPost = () => {
+    setIsOpenEditPost(false);
+  };
+  const handleOpenEditPost = () => {
+    setIsOpenEditPost(true);
+  };
   return (
     <>
       <DropdownMenu>
@@ -38,15 +47,18 @@ export default function PostOptions({ isFollowing, userId, postId }: Props) {
         <DropdownMenuContent className="w-66.5 py-2 px-0">
           {isOwner ? (
             <>
-              <DropdownMenuItem className="p-4 cursor-pointer">
-                Edit
+              <DropdownMenuItem
+                className="p-4 cursor-pointer"
+                onClick={handleOpenEditPost}
+              >
+                {POST_CONFIG.OWNER.OPTION_EDIT}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"
                 className="p-4 cursor-pointer"
                 onClick={handleDeletePost}
               >
-                Delete
+                {POST_CONFIG.OWNER.OPTION_DELETE}
               </DropdownMenuItem>
             </>
           ) : (
@@ -55,18 +67,30 @@ export default function PostOptions({ isFollowing, userId, postId }: Props) {
                 variant="destructive"
                 className="p-4 cursor-not-allowed"
               >
-                Report
+                {POST_CONFIG.NO_OWNER.OPTION_REPORT}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant={isFollowing ? "destructive" : "default"}
                 className="p-4 cursor-not-allowed"
               >
-                {isFollowing ? "Unfollow" : "Follow"}
+                {isFollowing
+                  ? POST_CONFIG.NO_OWNER.OPTION_UNFOLLOW
+                  : POST_CONFIG.NO_OWNER.OPTION_FOLLOW}
               </DropdownMenuItem>
             </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      {isOpenEditPost && (
+        <CommandCustom
+          open={isOpenEditPost}
+          onClose={handleCloseEditPost}
+          widthContent="sm:max-w-266.5 top-6 max-w-full w-full bg-none"
+          showCloseBtn={false}
+        >
+          <UpdatePost onClose={handleCloseEditPost} postId={postId} />
+        </CommandCustom>
+      )}
     </>
   );
 }

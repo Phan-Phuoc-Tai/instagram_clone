@@ -6,19 +6,23 @@ import { useLikeComment } from "@/hooks/posts/comments/useLikeComment";
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatTimePost } from "@/utils/formatTime";
-
+import CommandCustom from "../../modals/CommandCustom";
 import { useUserStore } from "@/stores/user.store";
-import { useUnlikeComment } from "@/hooks/posts/comments/useUnlikeComment";
+
 import Replies from "./Replies";
+import CommentOption from "./CommentOption";
+import { useUnlikeComment } from "@/hooks/posts/comments/useUnlikeComment";
 type Props = {
   comment: Comment;
 };
 export default function Comment({ comment }: Props) {
   const { setIsReply, setCommentId, setUserComment, postId } = use(PostContext);
   const { user } = useUserStore();
+  const isOwner = comment.userId._id === user._id;
   const [likes, setLikes] = useState(comment.likes);
   const [isLiked, setIsLiked] = useState(comment.isLiked);
   const [isShowReplies, setIsShowReplies] = useState(false);
+  const [isOpenPostDetailOption, setIsOpenPostDetailOption] = useState(false);
   const handleReplyComment = (commentId: string, userComment: string) => {
     setIsReply(true);
     setCommentId(commentId);
@@ -39,6 +43,12 @@ export default function Comment({ comment }: Props) {
   const handleShowReplies = () => {
     setIsShowReplies(true);
   };
+  const handleCloseCommentOption = () => {
+    setIsOpenPostDetailOption(false);
+  };
+  const handleOpenCommentOption = () => {
+    setIsOpenPostDetailOption(true);
+  };
   useEffect(() => {
     const handleSetLiked = () => {
       if (comment.likedBy.find((userId) => user._id === userId)) {
@@ -49,8 +59,8 @@ export default function Comment({ comment }: Props) {
   }, []);
   return (
     <div key={comment._id}>
-      <div className="relative">
-        <div className="flex justify-between text-base gap-1 pt-1.75">
+      <div className="relative group">
+        <div className=" flex justify-between text-base gap-1 pt-1.75">
           <PostInfo
             userId={comment.userId ? comment.userId._id : "null"}
             showFullName={false}
@@ -76,7 +86,7 @@ export default function Comment({ comment }: Props) {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-1 left-14 text-(--ig-secondary-text) text-xs font-semibold flex items-center gap-3">
+        <div className=" absolute bottom-1 left-14 text-(--ig-secondary-text) text-xs font-semibold flex items-center gap-3">
           <p>{formatTimePost(comment.createdAt)}</p>
           {likes > 0 && (
             <p>
@@ -91,6 +101,14 @@ export default function Comment({ comment }: Props) {
           >
             Reply
           </p>
+          <button
+            className=" w-4 h-4 hidden group-hover:flex items-center justify-center gap-0.5 group cursor-pointer"
+            onClick={handleOpenCommentOption}
+          >
+            <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) group-hover:bg-black "></span>
+            <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) group-hover:bg-black"></span>
+            <span className="w-0.75 h-0.75 rounded-full bg-(--ig-secondary-text) group-hover:bg-black"></span>
+          </button>
         </div>
       </div>
       {comment.replies.length > 0 && !isShowReplies ? (
@@ -112,6 +130,21 @@ export default function Comment({ comment }: Props) {
         </div>
       ) : (
         <></>
+      )}
+      {isOpenPostDetailOption && (
+        <CommandCustom
+          open={isOpenPostDetailOption}
+          onClose={handleCloseCommentOption}
+          widthContent="sm:max-w-140 max-w-full w-full bg-none"
+          showCloseBtn={false}
+        >
+          <CommentOption
+            isOwner={isOwner}
+            postId={postId}
+            commentId={comment._id}
+            onClose={() => setIsOpenPostDetailOption(false)}
+          />
+        </CommandCustom>
       )}
     </div>
   );

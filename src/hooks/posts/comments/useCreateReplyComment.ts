@@ -40,6 +40,7 @@ export const useCreateReplyComment = (postId: string) => {
       queryClient.invalidateQueries({
         queryKey: CACHE.POSTS.REPLIES_OF_COMMENT(data.parentCommentId!),
       });
+      queryClient.invalidateQueries({ queryKey: CACHE.POSTS.COMMENTS(postId) });
     },
   });
   return createComment;

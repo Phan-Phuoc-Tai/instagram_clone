@@ -30,13 +30,6 @@ export default function CreatePost({ onClose }: Props) {
   }>();
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (
-      !["image/jpeg", "image/jpg", "image/png", "video/mp4"].includes(
-        file!.type,
-      )
-    ) {
-      return toast.error("File invalid");
-    }
     const url = URL.createObjectURL(file!);
     setContentType(file!.type);
     setFile(file!);
@@ -48,6 +41,7 @@ export default function CreatePost({ onClose }: Props) {
   const handleBackStep = () => {
     if (isShowCaption) {
       setIsShowCaption(false);
+      setCountCharacter(0);
       return;
     }
     setPreviewUrl(null);
@@ -144,6 +138,7 @@ export default function CreatePost({ onClose }: Props) {
               <>
                 <Input
                   type="file"
+                  accept="image/*, video/*"
                   ref={chooseFileRef}
                   onChange={handleChangeFile}
                   hidden

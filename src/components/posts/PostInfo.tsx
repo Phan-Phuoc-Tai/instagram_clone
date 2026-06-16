@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "../ui/spinner";
 import { useUserById } from "@/hooks/users/useUserById";
 import { useUnfollowUser } from "@/hooks/follows/useUnfollowUser";
+import { useUserStore } from "@/stores/user.store";
 type Props = {
   userId: string;
   showFullName?: boolean;
@@ -25,6 +26,8 @@ export default function PostInfo({
   position,
 }: Props) {
   const { user, isLoading } = useUserById(userId);
+  const { user: myProfile } = useUserStore();
+  const isOwner = user._id === myProfile._id;
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const followUser = useFollowUser(user._id);
   const unfollowUser = useUnfollowUser(user._id);
@@ -123,34 +126,38 @@ export default function PostInfo({
             </div>
           </div>
 
-          <div className="py-4 px-2 gap-1 w-full flex items-center justify-between ">
-            {followUser.isPending || unfollowUser.isPending ? (
-              <div className="w-full flex items-center justify-center">
-                <Spinner />
-              </div>
-            ) : isFollow ? (
-              <>
-                <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer">
-                  <Send />
-                  <span>Message</span>
-                </Button>
+          {!isOwner ? (
+            <div className="py-4 px-2 gap-1 w-full flex items-center justify-between ">
+              {followUser.isPending || unfollowUser.isPending ? (
+                <div className="w-full flex items-center justify-center">
+                  <Spinner />
+                </div>
+              ) : isFollow ? (
+                <>
+                  <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer">
+                    <Send />
+                    <span>Message</span>
+                  </Button>
+                  <Button
+                    variant={"secondary"}
+                    className="flex-1 cursor-pointer"
+                    onClick={handleUnfollowUser}
+                  >
+                    Following
+                  </Button>
+                </>
+              ) : (
                 <Button
-                  variant={"secondary"}
-                  className="flex-1 cursor-pointer"
-                  onClick={handleUnfollowUser}
+                  className="bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer w-full"
+                  onClick={handleFollowUser}
                 >
-                  Following
+                  Follow
                 </Button>
-              </>
-            ) : (
-              <Button
-                className="bg-(--primary-bg-button) hover:bg-blue-600 cursor-pointer w-full"
-                onClick={handleFollowUser}
-              >
-                Follow
-              </Button>
-            )}
-          </div>
+              )}
+            </div>
+          ) : (
+            <div className="py-2"></div>
+          )}
         </div>
       </HoverCardContent>
     </HoverCard>

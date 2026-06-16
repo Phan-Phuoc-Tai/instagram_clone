@@ -1,0 +1,7 @@
+export const PROFILE_CONFIG = {
+  POSTS: "posts",
+  FOLLOWERS: "followers",
+  FOLLOWING: "following",
+  EDIT_PROFILE: "Edit profile",
+  VIEW_ARCHIVE: "View archive",
+};

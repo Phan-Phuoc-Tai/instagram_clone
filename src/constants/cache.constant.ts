@@ -8,14 +8,22 @@ export const CACHE = {
       return ["COMMENTS", postId];
     },
     REPLIES_OF_COMMENT(commentId: string) {
-      return ["Replies", commentId];
+      return ["REPLIES", commentId];
     },
   },
   USERS: {
-    LIST: ["users"],
+    LIST: ["USERS"],
     ID(id: string) {
       return [this.LIST, id];
     },
-    SUGGESTED_USERS: ["suggestedUsers"],
+    SUGGESTED_USERS: ["SUGGESTED_USER"],
+  },
+  FOLLOW: {
+    FOLLOWERS(userId: string) {
+      return ["FOLLOWERS", userId];
+    },
+    FOLLOWING(userId: string) {
+      return ["FOLLOWING", userId];
+    },
   },
 };
