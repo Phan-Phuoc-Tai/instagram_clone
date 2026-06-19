@@ -1,6 +1,6 @@
 import { CACHE } from "@/constants/cache.constant";
 import { postService } from "@/services/post.service";
-import type { Post } from "@/types/post.type";
+import type { PostType } from "@/types/post.type";
 import { useQuery } from "@tanstack/react-query";
 
 export const usePostById = (postId: string) => {
@@ -10,6 +10,6 @@ export const usePostById = (postId: string) => {
   });
   return {
     ...query,
-    post: query.data ?? ({} as Post),
+    post: query.data ?? ({} as PostType),
   };
 };

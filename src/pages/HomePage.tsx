@@ -28,7 +28,7 @@ export default function HomePage() {
             <div className="flex flex-col items-center justify-start">
               {status === "pending" &&
                 Array.from({ length: 3 }).map((_, index) => (
-                  <PostLoading key={index} />
+                  <PostLoading key={index} isShowUser={true} />
                 ))}
               {pages.map((page, index) => (
                 <React.Fragment key={index}>
@@ -43,7 +43,7 @@ export default function HomePage() {
               >
                 {isFetchingNextPage ? (
                   <div className=" w-full">
-                    <PostLoading />
+                    <PostLoading isShowUser={true} />
                   </div>
                 ) : hasNextPage ? (
                   <p>{POST_CONFIG.SCROLL_DOWN}</p>

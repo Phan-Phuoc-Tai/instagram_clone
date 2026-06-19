@@ -81,6 +81,11 @@ export default function PostDetail({ postId }: Props) {
     setIsOpenPostDetailOption(true);
   };
   useEffect(() => {
+    setLikes(post.likes);
+    setIsLiked(post.isLiked);
+    setIsSaved(post.isSaved);
+  }, [post]);
+  useEffect(() => {
     if (isReply) {
       setValue("content", `@${userComment} `);
       setFocus("content", {

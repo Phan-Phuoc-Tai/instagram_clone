@@ -1,4 +1,4 @@
-export type Post = {
+export type PostType = {
   _id: string;
   userId: {
     _id: string;
@@ -9,6 +9,7 @@ export type Post = {
   video: string | null;
   mediaType: string;
   likes: number;
+  comments: number;
   totalComments: number;
   likedBy: [];
   savedBy: [];
@@ -39,7 +40,7 @@ export interface Comment extends CommentReply {
 }
 
 export type PostResponse = {
-  posts: Post[];
+  posts: PostType[];
   totalPages: number;
   currentPage: number;
 };

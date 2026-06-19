@@ -79,5 +79,11 @@ export const API = {
     LIKE_COMMENT(postId: string, commentId: string) {
       return `/api/posts/${postId}/comments/${commentId}/like`;
     },
+    POSTS_USER_ID(userId: string, filter: string) {
+      return `/api/posts/user/${userId}?filter=${filter}`;
+    },
+    POST_STATS_USER_ID(userId: string) {
+      return `/api/posts/user/${userId}/stats`;
+    },
   },
 };

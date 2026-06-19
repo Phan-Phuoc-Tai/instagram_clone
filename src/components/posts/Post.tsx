@@ -1,6 +1,6 @@
 import { Bookmark, Heart, MessageCircle, Repeat, Send } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { Post } from "@/types/post.type";
+import type { PostType } from "@/types/post.type";
 import { cn } from "@/lib/utils";
 import PostInfo from "./PostInfo";
 import Modal from "../modals/Modal";

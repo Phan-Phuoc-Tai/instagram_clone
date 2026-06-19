@@ -34,6 +34,7 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
     setIsFollow(!result);
     setFollowers(followers - 1);
   };
+  console.log(suggestedUser);
 
   return (
     <HoverCard openDelay={500} closeDelay={100}>
@@ -139,10 +140,17 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
             )}
             {suggestedUser.recentImages.map((image, index) => (
               <div key={index} className="w-[calc(100%/3)] h-30">
-                <img
-                  src={image ? `${BASE_URL}${image}` : `${BASE_URL}/null`}
-                  className="w-full object-cover h-full"
-                />
+                {image.includes(".mp4") ? (
+                  <video
+                    src={image ? `${BASE_URL}${image}` : `${BASE_URL}/null`}
+                    className="w-full object-cover h-full"
+                  />
+                ) : (
+                  <img
+                    src={image ? `${BASE_URL}${image}` : `${BASE_URL}/null`}
+                    className="w-full object-cover h-full"
+                  />
+                )}
               </div>
             ))}
           </div>

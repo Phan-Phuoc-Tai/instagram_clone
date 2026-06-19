@@ -3,7 +3,7 @@ import { axiosInstance } from "@/lib/axios";
 import type {
   Comment,
   CommentResponse,
-  Post,
+  PostType,
   PostResponse,
   ReplyResponse,
 } from "@/types/post.type";
@@ -22,12 +22,12 @@ export const postService = {
       currentPage: pageParam,
     };
   },
-  getPostById: async (postId: string): Promise<Post> => {
+  getPostById: async (postId: string): Promise<PostType> => {
     const response = await axiosInstance.get(API.POSTS.POST_ID(postId));
     const { data } = response.data;
     return data;
   },
-  createPost: async (file: File, caption: string): Promise<Post> => {
+  createPost: async (file: File, caption: string): Promise<PostType> => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("caption", caption);
@@ -39,7 +39,7 @@ export const postService = {
     const { data } = response.data;
     return data;
   },
-  updatePost: async (postId: string, caption: string): Promise<Post> => {
+  updatePost: async (postId: string, caption: string): Promise<PostType> => {
     const response = await axiosInstance.patch(API.POSTS.POST_ID(postId), {
       caption,
     });
@@ -52,22 +52,22 @@ export const postService = {
     return success;
   },
 
-  likePost: async (postId: string): Promise<Post> => {
+  likePost: async (postId: string): Promise<PostType> => {
     const response = await axiosInstance.post(API.POSTS.LIKE_POST(postId));
     const { data } = response.data;
     return data;
   },
-  unlikePost: async (postId: string): Promise<Post> => {
+  unlikePost: async (postId: string): Promise<PostType> => {
     const response = await axiosInstance.delete(API.POSTS.LIKE_POST(postId));
     const { data } = response.data;
     return data;
   },
-  savePost: async (postId: string): Promise<Post> => {
+  savePost: async (postId: string): Promise<PostType> => {
     const response = await axiosInstance.post(API.POSTS.SAVE_POST(postId));
     const { data } = response.data;
     return data;
   },
-  unsavePost: async (postId: string): Promise<Post> => {
+  unsavePost: async (postId: string): Promise<PostType> => {
     const response = await axiosInstance.delete(API.POSTS.SAVE_POST(postId));
     const { data } = response.data;
     return data;
@@ -164,5 +164,22 @@ export const postService = {
     );
     const { success } = response.data;
     return success;
+  },
+  getPostByUserId: async (
+    userId: string,
+    filter: string,
+  ): Promise<PostType[]> => {
+    const response = await axiosInstance.get(
+      API.POSTS.POSTS_USER_ID(userId, filter),
+    );
+    const { data } = response.data;
+    return data.posts;
+  },
+  getPostStatsByUserId: async (userId: string) => {
+    const response = await axiosInstance.get(
+      API.POSTS.POST_STATS_USER_ID(userId),
+    );
+    const { data } = response.data;
+    return data;
   },
 };

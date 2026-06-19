@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import type { Follower } from "@/types/follower.type";
 import {
   HoverCard,
@@ -14,6 +15,9 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { Spinner } from "../ui/spinner";
 import { Send } from "lucide-react";
 import UserLoading from "../loading/UserLoading";
+import { CONFIG } from "@/constants/config.constant";
+import { useUserStore } from "@/stores/user.store";
+import { PROFILE_CONFIG } from "@/constants/profile.constant";
 
 type Props = {
   follower: Follower;
@@ -22,6 +26,8 @@ type Props = {
 export default function Follower({ follower, setFollowingCount }: Props) {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const { user, isLoading } = useUserById(follower._id);
+  const { user: myProfile } = useUserStore();
+  const isOwner = user._id === myProfile._id;
   const [isFollow, setIsFollow] = useState(user.isFollowing);
   const [followers, setFollowers] = useState(user.followersCount);
   const followUser = useFollowUser(user._id);
@@ -42,12 +48,13 @@ export default function Follower({ follower, setFollowingCount }: Props) {
     setIsFollow(user.isFollowing);
     setFollowers(user.followersCount);
   }, [user]);
+
   return (
     <>
       {isLoading ? (
         Array.from({ length: 7 }).map((_, index) => (
-          <div className="py-2">
-            <UserLoading key={index} />
+          <div className="py-2" key={index}>
+            <UserLoading />
           </div>
         ))
       ) : (
@@ -74,9 +81,12 @@ export default function Follower({ follower, setFollowingCount }: Props) {
                 {!isLoading && (
                   <>
                     <div className="mr-auto text-sm cursor-pointer  ">
-                      <p className="text-(--ig-primary-text) font-semibold ">
+                      <NavLink
+                        to={`${CONFIG.PROFILE}/${user._id}`}
+                        className="text-(--ig-primary-text) font-semibold "
+                      >
                         {user.username}
-                      </p>
+                      </NavLink>
                       <p className="text-(--ig-secondary-text) font-semibold ">
                         {user.fullName}
                       </p>
@@ -85,20 +95,26 @@ export default function Follower({ follower, setFollowingCount }: Props) {
                 )}
               </div>
             </HoverCardTrigger>
-            {isFollow ? (
+            {isOwner ? (
+              <></>
+            ) : isFollow ? (
               <Button
                 variant={"secondary"}
                 className="cursor-pointer ring-0 focus-visible:ring-0 border-0"
                 onClick={handleUnfollowUser}
               >
-                Following
+                {unfollowUser.isPending ? (
+                  <Spinner />
+                ) : (
+                  PROFILE_CONFIG.FOLLOWING
+                )}
               </Button>
             ) : (
               <Button
                 className=" bg-(--primary-bg-button) hover:bg-blue-500  text-white cursor-pointer ring-0 focus-visible:ring-0 border-0"
                 onClick={handleFollowUser}
               >
-                Follow
+                {followUser.isPending ? <Spinner /> : PROFILE_CONFIG.FOLLOW}
               </Button>
             )}
           </div>
@@ -123,9 +139,13 @@ export default function Follower({ follower, setFollowingCount }: Props) {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-(--ig-primary-text) text-base font-semibold ">
+                  <NavLink
+                    to={`${CONFIG.PROFILE}/${user._id}`}
+                    className="text-(--ig-primary-text) text-base font-semibold "
+                  >
                     {user.username}
-                  </p>
+                  </NavLink>
+
                   <p className="text-(--ig-secondary-text) text-sm font-normal  ">
                     {user.fullName}
                   </p>
@@ -134,11 +154,11 @@ export default function Follower({ follower, setFollowingCount }: Props) {
               <div className="flex items-center justify-center gap-10 w-full text-center text-(--ig-primary-text) pb-4">
                 <div>
                   <h3 className="font-bold text-base">{followers}</h3>
-                  <p>followers</p>
+                  <p>{PROFILE_CONFIG.FOLLOW}</p>
                 </div>
                 <div>
                   <h3 className="font-bold text-base">{user.followingCount}</h3>
-                  <p>followings</p>
+                  <p>{PROFILE_CONFIG.FOLLOWING}</p>
                 </div>
               </div>
 
@@ -151,14 +171,14 @@ export default function Follower({ follower, setFollowingCount }: Props) {
                   <>
                     <Button className="flex-1 bg-(--primary-bg-button) hover:bg-blue-500 cursor-pointer ring-0 focus-visible:ring-0 border-0">
                       <Send />
-                      <span>Message</span>
+                      <span>{PROFILE_CONFIG.MESSAGE}</span>
                     </Button>
                     <Button
                       variant={"secondary"}
                       className="flex-1 cursor-pointer"
                       onClick={handleUnfollowUser}
                     >
-                      Following
+                      {PROFILE_CONFIG.FOLLOWING}
                     </Button>
                   </>
                 ) : (
@@ -166,7 +186,7 @@ export default function Follower({ follower, setFollowingCount }: Props) {
                     className="bg-(--primary-bg-button) hover:bg-blue-500 cursor-pointer w-full ring-0 focus-visible:ring-0 border-0"
                     onClick={handleFollowUser}
                   >
-                    Follow
+                    {PROFILE_CONFIG.FOLLOW}
                   </Button>
                 )}
               </div>

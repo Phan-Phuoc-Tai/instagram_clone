@@ -11,7 +11,7 @@ type Props = {
 };
 export default function Following({ userId, setFollowingCount }: Props) {
   const {
-    pages: followerPages,
+    pages: followingPages,
     status,
     fetchNextPage,
     hasNextPage,
@@ -33,7 +33,7 @@ export default function Following({ userId, setFollowingCount }: Props) {
               <UserLoading />
             </div>
           ))}
-        {followerPages.map((page, index) => (
+        {followingPages.map((page, index) => (
           <React.Fragment key={index}>
             {page.following.map((follower) => (
               <Follower
