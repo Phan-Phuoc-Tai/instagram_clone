@@ -1,6 +1,7 @@
 export const CONFIG = {
   HOME: "/",
   PROFILE: "/profile",
+  EDIT_PROFILE: "/profile/edit",
   LOGIN: "/login",
   REGISTER: "/register",
   VERIFY_EMAIL: "/verify-email",

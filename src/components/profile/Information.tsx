@@ -112,12 +112,17 @@ export default function Information({ userIdUrl }: Props) {
           </div>
         ) : isOwner ? (
           <div className="flex items-center gap-2 mt-3 py-3">
-            <Button
-              variant={"secondary"}
-              className="block flex-1 h-11 cursor-pointer focus-visible:ring-0"
+            <NavLink
+              to={`${CONFIG.EDIT_PROFILE}`}
+              className="flex-1 block h-11"
             >
-              {PROFILE_CONFIG.EDIT_PROFILE}
-            </Button>
+              <Button
+                variant={"secondary"}
+                className="w-full h-full cursor-pointer focus-visible:ring-0"
+              >
+                {PROFILE_CONFIG.EDIT_PROFILE}
+              </Button>
+            </NavLink>
             <Button
               variant={"secondary"}
               className="block flex-1 h-11 cursor-not-allowed focus-visible:ring-0"

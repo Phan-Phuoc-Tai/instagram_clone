@@ -6,4 +6,7 @@ export const PROFILE_CONFIG = {
   VIEW_ARCHIVE: "View archive",
   MESSAGE: "Message",
   FOLLOW: "follow",
+  LOADING: "Processing...",
+  SUCCESS: "Edit profile success",
+  ERROR: "Edit profile failed",
 };

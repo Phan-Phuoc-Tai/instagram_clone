@@ -13,6 +13,8 @@ import { useFollowUser } from "@/hooks/follows/useFollowUser";
 import { useState } from "react";
 import { Spinner } from "../../ui/spinner";
 import { useUnfollowUser } from "@/hooks/follows/useUnfollowUser";
+import { NavLink } from "react-router-dom";
+import { CONFIG } from "@/constants/config.constant";
 type Props = {
   suggestedUser: UserSuggested;
 };
@@ -34,7 +36,6 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
     setIsFollow(!result);
     setFollowers(followers - 1);
   };
-  console.log(suggestedUser);
 
   return (
     <HoverCard openDelay={500} closeDelay={100}>
@@ -55,11 +56,14 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
                 </div>
               </AvatarFallback>
             </Avatar>
-            <p className="text-(--ig-primary-text) text-sm font-medium mr-auto truncate w-33 cursor-pointer">
+            <NavLink
+              to={`${CONFIG.PROFILE}/${suggestedUser._id}`}
+              className="text-(--ig-primary-text) text-sm font-medium mr-auto truncate w-33 cursor-pointer"
+            >
               {suggestedUser.fullName === ""
                 ? suggestedUser.username
                 : suggestedUser.fullName}
-            </p>
+            </NavLink>
           </div>
         </HoverCardTrigger>
         {isFollow ? (
@@ -99,9 +103,12 @@ export default function SuggestedUserCard({ suggestedUser }: Props) {
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-(--ig-primary-text) text-base font-semibold ">
+              <NavLink
+                to={`${CONFIG.PROFILE}/${suggestedUser._id}`}
+                className="text-(--ig-primary-text) text-base font-semibold "
+              >
                 {suggestedUser.username}
-              </p>
+              </NavLink>
               <p className="text-(--ig-secondary-text) text-sm font-normal  ">
                 {suggestedUser.fullName}
               </p>

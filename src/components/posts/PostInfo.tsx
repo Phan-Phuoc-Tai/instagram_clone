@@ -13,6 +13,8 @@ import { Spinner } from "../ui/spinner";
 import { useUserById } from "@/hooks/users/useUserById";
 import { useUnfollowUser } from "@/hooks/follows/useUnfollowUser";
 import { useUserStore } from "@/stores/user.store";
+import { NavLink } from "react-router-dom";
+import { CONFIG } from "@/constants/config.constant";
 type Props = {
   userId: string;
   showFullName?: boolean;
@@ -73,9 +75,12 @@ export default function PostInfo({
           {!isLoading && (
             <>
               <div className=" mr-auto text-sm cursor-pointer">
-                <p className="text-(--ig-primary-text) text-base font-semibold ">
+                <NavLink
+                  to={`${CONFIG.PROFILE}/${user._id}`}
+                  className="text-(--ig-primary-text) text-base font-semibold "
+                >
                   {user.username}
-                </p>
+                </NavLink>
                 {showFullName && (
                   <p className="text-(--ig-secondary-text) text-sm font-normal  ">
                     {user.fullName}
@@ -107,9 +112,12 @@ export default function PostInfo({
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-(--ig-primary-text) text-base font-semibold ">
+              <NavLink
+                to={`${CONFIG.PROFILE}/${user._id}`}
+                className="text-(--ig-primary-text) text-base font-semibold "
+              >
                 {user.username}
-              </p>
+              </NavLink>
               <p className="text-(--ig-secondary-text) text-sm font-normal  ">
                 {user.fullName}
               </p>

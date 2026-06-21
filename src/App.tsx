@@ -10,6 +10,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import ProfilePage from "./pages/ProfilePage";
+import EditProfile from "./pages/EditProfile";
 
 export default function App() {
   return (
@@ -33,7 +34,10 @@ export default function App() {
         </Route>
         <Route element={<MainLayout />}>
           <Route path={CONFIG.HOME} element={<HomePage />} />
-          <Route path={`${CONFIG.PROFILE}/:userId`} element={<ProfilePage />} />
+          <Route path={`${CONFIG.PROFILE}`}>
+            <Route path="edit" element={<EditProfile />} />
+            <Route path=":userId" element={<ProfilePage />} />
+          </Route>
         </Route>
       </Routes>
     </>
