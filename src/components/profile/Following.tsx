@@ -1,0 +1,62 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
+import React, { useEffect, type Dispatch, type SetStateAction } from "react";
+import Follower from "./Follower";
+import UserLoading from "../loading/UserLoading";
+import { useInView } from "react-intersection-observer";
+import { Spinner } from "../ui/spinner";
+import { useInfiniteFollowing } from "@/hooks/follows/useInfiniteFollowing";
+type Props = {
+  userId: string;
+  setFollowingCount: Dispatch<SetStateAction<number>>;
+};
+export default function Following({ userId, setFollowingCount }: Props) {
+  const {
+    pages: followingPages,
+    status,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteFollowing(userId);
+  const { ref, inView } = useInView({});
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  return (
+    <>
+      <ScrollArea className="border-t -mx-4 px-4 max-h-86">
+        {status === "pending" &&
+          Array.from({ length: 7 }).map((_, index) => (
+            <div className="my-2" key={index}>
+              <UserLoading />
+            </div>
+          ))}
+        {followingPages.map((page, index) => (
+          <React.Fragment key={index}>
+            {page.following.map((follower) => (
+              <Follower
+                follower={follower}
+                key={follower._id}
+                setFollowingCount={setFollowingCount}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+        <div ref={ref}>
+          {isFetchingNextPage && (
+            <div className="w-max mx-auto text-(--ig-secondary-text)">
+              <Spinner
+                style={{
+                  width: 24,
+                  height: 24,
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </ScrollArea>
+    </>
+  );
+}

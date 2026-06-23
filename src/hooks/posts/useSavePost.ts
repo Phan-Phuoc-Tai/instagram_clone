@@ -1,0 +1,44 @@
+import { CACHE } from "@/constants/cache.constant";
+import { postService } from "@/services/post.service";
+import type { PostResponse } from "@/types/post.type";
+import {
+  useMutation,
+  useQueryClient,
+  type InfiniteData,
+} from "@tanstack/react-query";
+
+export const useSavePost = () => {
+  const queryClient = useQueryClient();
+  const savePost = useMutation({
+    mutationFn: (postId: string) => {
+      return postService.savePost(postId);
+    },
+    onSuccess(data) {
+      data.isSaved = true;
+      queryClient.setQueryData(
+        CACHE.POSTS.LIST,
+        (oldList: InfiniteData<PostResponse>) => {
+          if (!oldList) {
+            return [];
+          }
+          return {
+            ...oldList,
+            pages: oldList.pages.map((page: PostResponse) => {
+              return {
+                ...page,
+                posts: page.posts.filter((post) => {
+                  return post._id === data._id
+                    ? { ...post, isSaved: true }
+                    : post;
+                }),
+              };
+            }),
+          };
+        },
+      );
+      queryClient.invalidateQueries({ queryKey: CACHE.POSTS.LIST });
+      queryClient.invalidateQueries({ queryKey: CACHE.POSTS.DETAIL(data._id) });
+    },
+  });
+  return savePost;
+};
