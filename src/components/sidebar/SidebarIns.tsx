@@ -5,7 +5,6 @@ import { CONFIG } from "@/constants/config.constant";
 import { cn } from "@/lib/utils";
 import ReelsIcon from "../icons/ReelsIcon";
 import MessageIcon from "../icons/MessageIcon";
-import SearchIcon from "../icons/SearchIcon";
 import NotificationsIcon from "../icons/NotificationsIcon";
 import CreateIcon from "../icons/CreateIcon";
 import Profile from "./Profile";
@@ -13,6 +12,8 @@ import { useState } from "react";
 import CommandCustom from "../modals/CommandCustom";
 import CreatePost from "../posts/CreatePost";
 import { useUserStore } from "@/stores/user.store";
+import LogoutIcon from "../icons/LogoutIcon";
+import Search from "./Search";
 
 export default function SidebarIns() {
   const ITEM_CSS = {
@@ -58,10 +59,7 @@ export default function SidebarIns() {
             <MessageIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Message</span>
           </li>
-          <li className={ITEM_CSS.DIV}>
-            <SearchIcon className="w-6 h-6" />
-            <span className={cn(ITEM_CSS.SPAN)}>Search</span>
-          </li>
+          <Search />
           <li className={ITEM_CSS.DIV}>
             <NotificationsIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Notifications</span>
@@ -78,7 +76,10 @@ export default function SidebarIns() {
             <span className={cn(ITEM_CSS.SPAN)}>Profile</span>
           </NavLink>
         </ul>
-        <div>Logout</div>
+        <div className={`${ITEM_CSS.DIV} text-red-500`}>
+          <LogoutIcon className="w-6 h-6" />
+          <span className={cn(ITEM_CSS.SPAN)}>Logout</span>
+        </div>
       </aside>
       {isCreatePost && (
         <CommandCustom

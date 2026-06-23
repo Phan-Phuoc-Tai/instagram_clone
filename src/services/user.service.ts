@@ -39,4 +39,9 @@ export const userService = {
     const { data } = response.data;
     return data;
   },
+  searchUser: async (keyword: string): Promise<User[]> => {
+    const response = await axiosInstance.get(API.USER.SEARCH(keyword));
+    const { data } = response.data;
+    return data;
+  },
 };

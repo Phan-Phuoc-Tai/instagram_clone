@@ -21,6 +21,7 @@ import { userService } from "../services/user.service";
 import { PROFILE_CONFIG } from "../constants/profile.constant";
 import { toast } from "sonner";
 export default function EditProfile() {
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const { refetchUser } = useUserStore();
   const { user } = useUserStore();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -78,7 +79,13 @@ export default function EditProfile() {
         <h2 className="text-xl font-bold py-3 mb-4">Edit profile</h2>
         <div className="flex items-center justify-between gap-4 bg-[#f3f5f7] p-4 rounded-2xl my-4">
           <Avatar className="flex items-center justify-center size-14">
-            <AvatarImage src={previewUrl ? previewUrl : user.profilePicture!} />
+            <AvatarImage
+              src={
+                previewUrl !== ""
+                  ? previewUrl
+                  : `${BASE_URL}${user.profilePicture!}`
+              }
+            />
             <AvatarFallback asChild>
               <div className="p-1 border bg-white">
                 <AvatarDefault width="24px" height="24px" />

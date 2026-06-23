@@ -31,6 +31,9 @@ export const API = {
     SUGGESTED_USERS(limit = 5) {
       return `/api/users/suggested?limit=${limit}`;
     },
+    SEARCH(keyword: string) {
+      return `/api/users/search?q=${keyword}`;
+    },
   },
   FOLLOW: {
     FOLLOW_USER(userId: string) {
@@ -87,4 +90,5 @@ export const API = {
       return `/api/posts/user/${userId}/stats`;
     },
   },
+  SEARCH_HISTORY: "/api/search-history",
 };

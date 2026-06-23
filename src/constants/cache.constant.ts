@@ -29,4 +29,5 @@ export const CACHE = {
       return ["FOLLOWING", userId];
     },
   },
+  SEARCH_HISTORY: ["SEARCH_HISTORY"],
 };

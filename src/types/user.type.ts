@@ -37,3 +37,10 @@ export type UserSuggested = {
   recentImages: string[];
   isFollowing: false;
 };
+
+export type UserSearchHistory = {
+  _id: string;
+  userId: string;
+  searchedUserId: User;
+  searchQuery: string;
+};
