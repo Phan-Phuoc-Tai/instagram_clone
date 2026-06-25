@@ -1,6 +1,6 @@
 import Instagram from "../icons/Instagram";
 import HomeIcon from "../icons/HomeIcon";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CONFIG } from "@/constants/config.constant";
 import { cn } from "@/lib/utils";
 import ReelsIcon from "../icons/ReelsIcon";
@@ -14,19 +14,40 @@ import CreatePost from "../posts/CreatePost";
 import { useUserStore } from "@/stores/user.store";
 import LogoutIcon from "../icons/LogoutIcon";
 import Search from "./Search";
+import { authService } from "@/services/auth.service";
+import { toast } from "sonner";
+import { LOGOUT } from "@/constants/auth.constant";
 
 export default function SidebarIns() {
   const ITEM_CSS = {
     DIV: "flex items-center gap-4 p-3 my-1 hover:bg-black/5 cursor-pointer rounded-lg overflow-hidden",
     SPAN: "opacity-0 group-hover:opacity-100 -translate-x-3 group-hover:translate-x-0 transition-transform ease-in-out duration-300",
   };
+  const navigate = useNavigate();
   const { user } = useUserStore();
   const [isCreatePost, setIsCreatePost] = useState(false);
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
+  const handleOpenSearch = () => {
+    setIsOpenSearch(true);
+  };
   const handleOpenCreatePost = () => {
     setIsCreatePost(true);
   };
   const handleCloseCreatePost = () => {
     setIsCreatePost(false);
+  };
+  const handleLogout = () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    toast.promise(() => authService.logout(refreshToken!), {
+      loading: LOGOUT.LOADING,
+      error: LOGOUT.ERROR,
+      success() {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate(CONFIG.LOGIN);
+        return LOGOUT.SUCCESS;
+      },
+    });
   };
   return (
     <>
@@ -55,11 +76,16 @@ export default function SidebarIns() {
             <ReelsIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Reels</span>
           </li>
-          <li className={ITEM_CSS.DIV}>
+          <NavLink to={CONFIG.MESSAGE} className={ITEM_CSS.DIV}>
             <MessageIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Message</span>
+          </NavLink>
+          <li onClick={handleOpenSearch}>
+            <Search
+              open={isOpenSearch}
+              onClose={() => setIsOpenSearch(false)}
+            />
           </li>
-          <Search />
           <li className={ITEM_CSS.DIV}>
             <NotificationsIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Notifications</span>
@@ -76,7 +102,10 @@ export default function SidebarIns() {
             <span className={cn(ITEM_CSS.SPAN)}>Profile</span>
           </NavLink>
         </ul>
-        <div className={`${ITEM_CSS.DIV} text-red-500`}>
+        <div
+          className={`${ITEM_CSS.DIV} text-red-500 hover:bg-red-50`}
+          onClick={handleLogout}
+        >
           <LogoutIcon className="w-6 h-6" />
           <span className={cn(ITEM_CSS.SPAN)}>Logout</span>
         </div>

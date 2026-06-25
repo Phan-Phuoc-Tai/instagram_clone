@@ -10,7 +10,9 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import ProfilePage from "./pages/ProfilePage";
-import EditProfile from "./pages/EditProfile";
+import EditProfile from "./pages/EditProfilePage";
+import { AuthMiddleware } from "./middlewares/auth.middleware";
+import MessagePage from "./pages/MessagePage";
 
 export default function App() {
   return (
@@ -32,11 +34,14 @@ export default function App() {
             element={<ResetPasswordPage />}
           />
         </Route>
-        <Route element={<MainLayout />}>
-          <Route path={CONFIG.HOME} element={<HomePage />} />
-          <Route path={`${CONFIG.PROFILE}`}>
-            <Route path="edit" element={<EditProfile />} />
-            <Route path=":userId" element={<ProfilePage />} />
+        <Route element={<AuthMiddleware />}>
+          <Route element={<MainLayout />}>
+            <Route path={CONFIG.HOME} element={<HomePage />} />
+            <Route path={CONFIG.MESSAGE} element={<MessagePage />} />
+            <Route path={`${CONFIG.PROFILE}`}>
+              <Route path="edit" element={<EditProfile />} />
+              <Route path=":userId" element={<ProfilePage />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

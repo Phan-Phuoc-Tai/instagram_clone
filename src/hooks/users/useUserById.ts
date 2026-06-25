@@ -10,7 +10,7 @@ export const useUserById = (id: string) => {
       //Xử lý TH id = undefined giảm số lần gọi API
       if (!id) {
         return {
-          username: "Tài khoản đã bị xóa",
+          username: "Account has been deleted",
         } as UserById;
       }
       return userService.getUserById(id);
@@ -20,7 +20,7 @@ export const useUserById = (id: string) => {
     user:
       query.data ??
       ({
-        username: "Tài khoản đã bị xóa",
+        username: "Account has been deleted",
       } as UserById),
     isLoading: query.isLoading,
     isError: query.isError,

@@ -130,3 +130,9 @@ export const RESET_PASSWORD = {
   ERROR: "Password reset failed!",
   SUCCESS: "Password reset success!",
 };
+
+export const LOGOUT = {
+  LOADING: "Processing...",
+  ERROR: "Logout failed!",
+  SUCCESS: "Logout success!",
+};

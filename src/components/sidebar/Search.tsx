@@ -14,22 +14,33 @@ import { useState, type ChangeEvent } from "react";
 import type { User } from "@/types/user.type";
 import { userService } from "@/services/user.service";
 import { ScrollArea } from "../ui/scroll-area";
-export default function Search() {
+import { useDebounce } from "@/hooks/search/useDebounce";
+type Props = {
+  open: boolean;
+  onClose: () => void;
+};
+export default function Search({ open, onClose }: Props) {
   const { data: searchHistory } = useQuery({
     queryKey: CACHE.SEARCH_HISTORY,
     queryFn: searchHistoryService.getSearchHistory,
   });
   const [searchResult, setSearchResult] = useState<User[]>([]);
   const [keyword, setKeyWord] = useState("");
-
-  const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
-    const keyword = e.currentTarget.value;
+  const debounceSearchAPI = useDebounce(async (keyword: string) => {
+    if (keyword === "") {
+      setSearchResult([]);
+      return;
+    }
     const result = await userService.searchUser(keyword);
     setSearchResult([...result]);
+  });
+  const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.currentTarget.value;
     setKeyWord(keyword);
+    debounceSearchAPI(keyword);
   };
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={onClose}>
       <SheetTrigger className="w-full">
         <li
           className={
@@ -52,7 +63,7 @@ export default function Search() {
           <div>
             <Input
               className="focus-visible:ring-0 px-4 py-2.5 my-3 h-auto rounded-full text-base bg-[#eee] "
-              placeholder="Search user"
+              placeholder="Search"
               onChange={handleSearch}
             />
           </div>
@@ -72,6 +83,8 @@ export default function Search() {
                     key={searchItem._id}
                     showCloseBtn={false}
                     keyword={keyword}
+                    onClose={onClose}
+                    onRefreshSearch={() => setSearchResult([])}
                   />
                 ))
               : searchHistory?.map((searchItem) => (

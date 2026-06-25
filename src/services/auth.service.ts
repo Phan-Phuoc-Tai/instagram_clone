@@ -52,4 +52,11 @@ export const authService = {
     const { data } = response.data;
     return data;
   },
+  logout: async (refreshToken: string) => {
+    const response = await axiosInstance.post(API.AUTH.LOGOUT, {
+      refreshToken,
+    });
+    const { success } = response.data;
+    return success;
+  },
 };

@@ -30,4 +30,7 @@ export const CACHE = {
     },
   },
   SEARCH_HISTORY: ["SEARCH_HISTORY"],
+  MESSAGE: {
+    CONVERSATIONS: ["CONVERSATIONS"],
+  },
 };

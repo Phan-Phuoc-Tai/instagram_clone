@@ -10,11 +10,21 @@ type Props = {
   user: User;
   showCloseBtn: boolean;
   keyword?: string;
+  onClose?: () => void;
+  onRefreshSearch?: () => void;
 };
-export default function SearchItem({ user, showCloseBtn, keyword }: Props) {
+export default function SearchItem({
+  user,
+  showCloseBtn,
+  keyword,
+  onClose,
+  onRefreshSearch,
+}: Props) {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const handleAddSearchHistory = async () => {
     await searchHistoryService.addSearchHistory(user._id, keyword!);
+    onClose?.();
+    onRefreshSearch?.();
   };
   return (
     <div className="flex items-center justify-between gap-3 py-1">

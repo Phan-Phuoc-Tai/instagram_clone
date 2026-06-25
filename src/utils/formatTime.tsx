@@ -38,3 +38,18 @@ export const formatTimePost = (date: string | Date) => {
   }
   return postDate.locale("en").fromNow(true);
 };
+
+export const formatTimeConversation = (date: string | Date) => {
+  const now = dayjs();
+  const postDate = dayjs(date);
+  const diffInWeeks = now.diff(postDate, "week");
+
+  if (diffInWeeks > 52) {
+    return postDate.locale("en").format("D MMMM, YYYY");
+  }
+
+  if (diffInWeeks > 1) {
+    return `${diffInWeeks}w`;
+  }
+  return postDate.locale("en").fromNow(true);
+};

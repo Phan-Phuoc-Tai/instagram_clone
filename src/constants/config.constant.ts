@@ -1,5 +1,6 @@
 export const CONFIG = {
   HOME: "/",
+  MESSAGE: "/message",
   PROFILE: "/profile",
   EDIT_PROFILE: "/profile/edit",
   LOGIN: "/login",
@@ -22,6 +23,7 @@ export const API = {
       return `/api/auth/reset-password/${token}`;
     },
     REFRESH_TOKEN: "/api/auth/refresh-token",
+    LOGOUT: "/api/auth/logout",
   },
   USER: {
     PROFILE: "/api/users/profile",
@@ -91,4 +93,9 @@ export const API = {
     },
   },
   SEARCH_HISTORY: "/api/search-history",
+  MESSAGES: {
+    CONVERSATIONS(page: number, limit: number) {
+      return `/api/messages/conversations?page=${page}&limit=${limit}`;
+    },
+  },
 };

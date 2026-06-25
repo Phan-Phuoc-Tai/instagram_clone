@@ -15,8 +15,8 @@ export default function MediaContent({ filter }: Props) {
     <div className="grid grid-cols-12 gap-0.5 rounded-md overflow-hidden">
       {isLoading &&
         Array.from({ length: 4 }).map((_, index) => (
-          <div className="col-span-3 h-[40vh]">
-            <PostLoading isShowUser={false} key={index} />
+          <div className="col-span-3 h-[40vh]" key={index}>
+            <PostLoading isShowUser={false} />
           </div>
         ))}
       {posts?.map((post) => (
@@ -27,12 +27,15 @@ export default function MediaContent({ filter }: Props) {
           <div className="w-max mx-auto">
             <CameraIcon />
           </div>
-          <p className="my-6 font-bold text-3xl">Share {filter}s</p>
+          <p className="my-6 font-bold text-3xl">
+            Share {filter === "all" ? "post" : filter}s
+          </p>
           <p className="mb-6 text-sm">
-            When you share {filter}s, they will appear on your profile.
+            When you share {filter === "all" ? "post" : filter}s, they will
+            appear on your profile.
           </p>
           <p className="text-(--ig-colors-link-text) font-medium">
-            Share your first {filter}s
+            Share your first {filter === "all" ? "post" : filter}s
           </p>
         </div>
       )}
