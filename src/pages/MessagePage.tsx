@@ -7,12 +7,11 @@ import { useConversations } from "@/hooks/messages/useConversations";
 import { useUserStore } from "@/stores/user.store";
 import { Edit, Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useInView } from "react-intersection-observer";
+// import { useInView } from "react-intersection-observer";
 import React from "react";
 export default function MessagePage() {
   const { user } = useUserStore();
-  const { pages, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useConversations();
+  const { pages } = useConversations();
   // const { ref, inView } = useInView({});
   return (
     <div className="ml-18 flex items-center">
