@@ -66,6 +66,8 @@
   --ig-colors-link-text: #3143e3;
   --ig-primary-bg-btn: #4a5df9;
   --ig-primary-bg-btn-hover: #4150f7;
+  --ig-primary-bg-message: #4a5df9;
+  --ig-secondary-bg-message: #f3f5f7;
 }
 
 :root {

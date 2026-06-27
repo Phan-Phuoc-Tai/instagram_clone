@@ -3,6 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AvatarDefault from "../icons/AvatarDefault";
 import { useUserStore } from "@/stores/user.store";
 import { formatTimeConversation } from "@/utils/formatTime";
+import { use } from "react";
+import { ConversationContext } from "@/contexts/conversation.context";
 type Props = {
   conversation: Conversation;
 };
@@ -16,10 +18,17 @@ export default function Conversation({ conversation }: Props) {
   const participantUnknown = {
     fullname: "Account has been deleted",
   };
+  const { setConversationId, setParticipant } = use(ConversationContext);
   const isOwnerSender = lastMessage && user._id === lastMessage.senderId;
-
+  const handleSetConversation = () => {
+    setConversationId(conversation._id);
+    setParticipant(participant!);
+  };
   return (
-    <div className="flex items-center gap-3 px-6 py-2 cursor-pointer hover:bg-[#f3f5f7] rounded-lg">
+    <div
+      onClick={handleSetConversation}
+      className="flex items-center gap-3 px-6 py-2 cursor-pointer hover:bg-[#f3f5f7] rounded-lg"
+    >
       <Avatar className="flex items-center justify-center size-14">
         <AvatarImage
           src={

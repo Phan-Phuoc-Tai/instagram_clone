@@ -97,5 +97,12 @@ export const API = {
     CONVERSATIONS(page: number, limit: number) {
       return `/api/messages/conversations?page=${page}&limit=${limit}`;
     },
+    MESSAGE_IN_CONVERSATION(
+      conversationId: string,
+      page: number,
+      limit: number,
+    ) {
+      return `/api/messages/conversations/${conversationId}/messages?page=${page}&limit=${limit}`;
+    },
   },
 };

@@ -30,7 +30,10 @@ export const CACHE = {
     },
   },
   SEARCH_HISTORY: ["SEARCH_HISTORY"],
-  MESSAGE: {
+  MESSAGES: {
     CONVERSATIONS: ["CONVERSATIONS"],
+    MESSAGE_IN_CONVERSATION(conversationId: string) {
+      return [...this.CONVERSATIONS, conversationId];
+    },
   },
 };

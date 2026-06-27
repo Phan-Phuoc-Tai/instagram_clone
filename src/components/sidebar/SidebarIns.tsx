@@ -76,10 +76,20 @@ export default function SidebarIns() {
             <ReelsIcon className="w-6 h-6" />
             <span className={cn(ITEM_CSS.SPAN)}>Reels</span>
           </li>
-          <NavLink to={CONFIG.MESSAGE} className={ITEM_CSS.DIV}>
-            <MessageIcon className="w-6 h-6" />
-            <span className={cn(ITEM_CSS.SPAN)}>Message</span>
-          </NavLink>
+          <NavLink
+            to={CONFIG.MESSAGE}
+            children={({ isActive }) => (
+              <div className={ITEM_CSS.DIV}>
+                <MessageIcon isActive={isActive} className="w-6 h-6" />
+                <span
+                  className={cn(ITEM_CSS.SPAN, isActive && "font-semibold")}
+                >
+                  Messages
+                </span>
+              </div>
+            )}
+          />
+
           <li onClick={handleOpenSearch}>
             <Search
               open={isOpenSearch}

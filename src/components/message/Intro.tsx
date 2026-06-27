@@ -7,6 +7,7 @@ export default function Intro() {
     <div className="flex items-center justify-center flex-col">
       <div>
         <MessageIcon
+          isActive={false}
           className="w-24 h-24 flex items-center justify-center border-2 rounded-full border-(--ig-primary-text)"
           style={{
             width: "40",

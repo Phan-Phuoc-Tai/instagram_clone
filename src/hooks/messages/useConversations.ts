@@ -4,7 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useConversations = () => {
   const query = useInfiniteQuery({
-    queryKey: CACHE.MESSAGE.CONVERSATIONS,
+    queryKey: CACHE.MESSAGES.CONVERSATIONS,
     queryFn: ({ pageParam }) => messageService.getConversations(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
